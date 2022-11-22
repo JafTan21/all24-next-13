@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background: #e5e8ed;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes animate-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spin {
+  animation-name: animate-loading;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+
+.rate-bg {
+  background-color: #52a921;
+}
