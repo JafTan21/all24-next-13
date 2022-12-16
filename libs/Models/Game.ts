@@ -1,11 +1,13 @@
 import { IQuestion } from "./Question";
 
+export interface IGameType {
+  id: number;
+  img: string;
+  name: string;
+}
+
 export interface IGame {
-  game_type: {
-    id: number;
-    img: string;
-    name: string;
-  };
+  game_type: IGameType;
   id: number;
 
   game_type_id: number;
@@ -29,6 +31,20 @@ export interface IGame {
 
   game_break_time: number;
   game_break_time_status: number;
+
+  total_questions_count?: number;
+  total_answers_count?: number;
+
+  closed_on?: string;
+
+  bets_count?: number;
+  multibets_count?: number;
+
+  bets_amount?: number;
+  possible_return?: number;
+
+  questions_count?: number;
+  answers_count?: number;
 
   questions: {
     [id: number]: IQuestion;

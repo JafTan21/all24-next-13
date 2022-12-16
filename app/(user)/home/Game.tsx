@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Collapsible from "../../../components/Html/Collapsible";
 import { IGame } from "../../../libs/Models/Game";
 import Question from "./Question";
 
-export default function Game({ game }: { game: IGame }) {
+export default function Game({ initialGame }: { initialGame: IGame }) {
+  const [game, gameSet] = useState(initialGame);
+
   return (
     <Collapsible
       className="bg-gray-200 mt-1 mx-1"
@@ -37,11 +39,16 @@ export default function Game({ game }: { game: IGame }) {
       }
     >
       <div className="">
-        {Object.entries(game.questions).map(([id, question]) => {
-          return (
-            <Question question={question} game={game} key={`question-${id}`} />
-          );
-        })}
+        {game.questions &&
+          Object.entries(game.questions).map(([id, question]) => {
+            return (
+              <Question
+                initialQuestion={question}
+                game={game}
+                key={`question-${id}`}
+              />
+            );
+          })}
       </div>
     </Collapsible>
   );

@@ -15,8 +15,8 @@ export interface IBet {
   rate: number;
   possible_return: number;
 
-  returned_rate: number;
-  returned_amount: number;
+  // returned_rate: number;
+  // returned_amount: number;
 
   refund_rate: number;
   refund_amount: number;

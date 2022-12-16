@@ -11,6 +11,7 @@ export default function Collapsible({
   time,
   trigger,
   className,
+  isClosed,
 }: {
   text?: string;
   icon?: string | StaticImageData;
@@ -18,18 +19,19 @@ export default function Collapsible({
   children: ReactNode;
   className?: string;
   time?: number;
+  isClosed?: boolean;
 }) {
-  const classes = `bg-white rounded border-gray-800 flex flex-col ${className}`;
-  const [opened, openedSet] = useState(true);
+  const classes = ` rounded border-gray-800 flex flex-col ${className}`;
+  const [opened, openedSet] = useState(!isClosed);
 
   return (
     <ReactCollapsible
       openedClassName={classes}
       className={classes}
       transitionTime={time || Children.count(children) * 50}
-      open
-      onOpen={() => openedSet(true)}
-      onClose={() => openedSet(false)}
+      open={!isClosed}
+      onOpen={() => openedSet(false)}
+      onClose={() => openedSet(true)}
       trigger={
         trigger || (
           <div className="flex items-center p-2 text-white bg-primary border rounded-md">

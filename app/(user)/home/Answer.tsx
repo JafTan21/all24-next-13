@@ -1,26 +1,54 @@
-import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { Rings } from "react-loader-spinner";
 import useUser from "../../../hooks/api/useUser";
 import { IAnswer } from "../../../libs/Models/Answer";
 import { IGame } from "../../../libs/Models/Game";
 import { IQuestion } from "../../../libs/Models/Question";
+import ErrorHandler from "../../../utils/helpers/ErrorHandler";
 import { errorNotification } from "../../../utils/helpers/NotificationHelper";
 import BetModal from "./BetModal";
-import Question from "./Question";
+import { MultibetContext } from "./Multibet";
 
 export default function Answer({
-  answer,
+  initialAnswer,
   question,
   game,
   idx,
 }: {
-  answer: IAnswer;
   idx: number;
+  initialAnswer: IAnswer;
   game: IGame;
   question: IQuestion;
 }) {
+  const [answer, answerSet] = useState(initialAnswer);
+
   const [show, showSet] = useState(false);
   const { user, isLoading } = useUser();
+
+  const { betsForMultibet, betsForMultibetSet } = useContext(MultibetContext);
+  const [loading, loadingSet] = useState(false);
+
+  const SelectForMultibet = () => {
+    loadingSet(true);
+    axios
+      .post("/user/check-answer-id-for-multi", {
+        prevIds: betsForMultibet.map((bet) => bet.answer.id),
+        newId: answer.id,
+      })
+      .then((res) => {
+        betsForMultibetSet([
+          ...betsForMultibet,
+          {
+            game,
+            question,
+            answer,
+          },
+        ]);
+      })
+      .catch(ErrorHandler)
+      .finally(() => loadingSet(false));
+  };
 
   const handleClick = () => {
     if (isLoading) return;
@@ -30,7 +58,16 @@ export default function Answer({
       return;
     }
 
-    showSet(true);
+    if (!answer.can_bet || !game.can_bet || !question.can_bet) {
+      errorNotification("Paused");
+      return;
+    }
+
+    if (betsForMultibet.length > 0) {
+      SelectForMultibet();
+    } else {
+      showSet(true);
+    }
   };
 
   return (
@@ -45,32 +82,48 @@ export default function Answer({
           borderLeft: 0,
         }}
       >
-        <div
-          style={{
-            whiteSpace: "nowrap",
-            marginRight: "4px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: 14,
-              fontWeight: 500,
-            }}
-          >
-            {answer.answer}
-          </span>
-        </div>
+        {loading && (
+          <>
+            <Rings
+              height={40}
+              width={40}
+              color={"black"}
+              ariaLabel="loading-indicator"
+            />
+            <span className="text-gray-500">checking..</span>
+          </>
+        )}
 
-        <span
-          className={`px-4 my-1 rounded text-white rate-bg`}
-          style={{
-            fontSize: 14,
-            width: 60,
-            textAlign: "center",
-          }}
-        >
-          {Number(answer.rate).toFixed(2)}
-        </span>
+        {!loading && (
+          <>
+            <div
+              style={{
+                whiteSpace: "nowrap",
+                marginRight: "4px",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 14,
+                  fontWeight: 500,
+                }}
+              >
+                {answer.answer}
+              </span>
+            </div>
+
+            <span
+              className={`px-4 my-1 rounded text-white rate-bg`}
+              style={{
+                fontSize: 14,
+                width: 60,
+                textAlign: "center",
+              }}
+            >
+              {Number(answer.rate).toFixed(2)}
+            </span>
+          </>
+        )}
       </button>
 
       <BetModal

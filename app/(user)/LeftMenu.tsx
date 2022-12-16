@@ -101,13 +101,13 @@ const Menus = ({ close }: { close: () => void }) => {
       />
       <SideLink
         close={close}
-        href="/transfer"
+        href="/balance-transfer"
         text="Balance Transfer"
         icon={<FaMoneyBillAlt fontSize={18} />}
       />
       <SideLink
         close={close}
-        href="/transfer-to-reseller"
+        href="/balance-transfer-to-reseller"
         text="Transfer to reseller"
         icon={<FaMoneyBillAlt fontSize={18} />}
       />
@@ -125,13 +125,13 @@ const Menus = ({ close }: { close: () => void }) => {
       />
       <SideLink
         close={close}
-        href="/sponsor-earnings"
+        href="/statements/sponsor-earnings"
         text="Sponsor Earnings"
         icon={<BsCurrencyDollar fontSize={18} />}
       />
       <SideLink
         close={close}
-        href="/all-transaction"
+        href="/statements/all"
         text="All Transaction"
         icon={<BsCurrencyDollar fontSize={18} />}
       />

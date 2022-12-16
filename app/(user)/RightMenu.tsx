@@ -62,11 +62,11 @@ export default function RightMenu() {
   );
 }
 
-const Topbar = (props: { close: () => void }) => {
+const Topbar = ({ close }: { close: () => void }) => {
   const { user } = useUser();
   return (
     <div className="bg-gray-200 flex justify-center flex-col p-3">
-      <button onClick={props.close} className="ml-3 my-4">
+      <button onClick={close} className="ml-3 my-4">
         <GrClose />
       </button>
 
@@ -114,37 +114,37 @@ const Menus = ({ close }: { close: () => void }) => {
       />
       <SideLink
         close={close}
-        href="/multibet-statement"
+        href="/statements/multibet"
         text="Multibet Statement"
         icon={<FaGamepad fontSize={18} />}
       />
       <SideLink
         close={close}
-        href="/transfer-statement"
+        href="/statements/balance-transfer"
         text="Balance Transfers Statement"
         icon={<BsCurrencyDollar fontSize={18} />}
       />
       <SideLink
         close={close}
-        href="/to-reseller-transfer-statement"
+        href="/statements/to-reseller-only-balance-transfer"
         text="To Reseller Transfers Statement"
         icon={<BsCurrencyDollar fontSize={18} />}
       />
       <SideLink
         close={close}
-        href="/deposit-statement"
+        href="/statements/deposit"
         text="Deposit Statement"
         icon={<FaRegListAlt fontSize={18} />}
       />
       <SideLink
         close={close}
-        href="/withdraw-statement"
+        href="/statements/withdraw"
         text="Withdraw Statement"
         icon={<FaRegListAlt fontSize={18} />}
       />
       <SideLink
         close={close}
-        href="/spinner-statement"
+        href="/statements/spinner"
         text="Spinner Statement"
         icon={<ImSpinner9 fontSize={18} />}
       />

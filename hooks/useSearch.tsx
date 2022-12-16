@@ -1,39 +1,74 @@
 "use client";
 
 import axios from "axios";
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
-import useSWR from "swr";
-import Input from "../components/Html/Input";
+import React, { useEffect, useState } from "react";
 import ErrorHandler from "../utils/helpers/ErrorHandler";
 import usePagination from "./usePagination";
 
 interface ISearchProps {
   url: string;
+  params?: { [key: string | number]: string | boolean | number | undefined };
+  noPagination?: boolean;
 }
 
-export default function useSearch({ url }: ISearchProps) {
+export default function useSearch<T = any[]>({
+  url,
+  params,
+  noPagination,
+}: ISearchProps) {
   const [search, searchSet] = useState({
     value: "",
     date: "",
   });
   const [timeout, timeoutSet] = useState<NodeJS.Timeout>();
-  const [data, dataSet] = useState<any>();
+  const [data, dataSet] = useState<T>();
 
   const [totalPageCount, totalPageCountSet] = useState(1);
   const { paginator, currentPage } = usePagination(totalPageCount);
 
   const fetchData = ({ value, date }: typeof search) => {
+    if (!location) {
+      console.error("No Window found on useSearch:fetchData()");
+      return;
+    }
+
     axios
       .get(url, {
         params: {
-          value,
-          date,
+          search_value: value,
+          search_date: date,
           page: currentPage,
+          ...params,
         },
       })
       .then((res) => {
-        dataSet(res.data.data);
-        totalPageCountSet(res.data.meta.last_page);
+        dataSet(res.data.data || res.data);
+        if (!noPagination)
+          totalPageCountSet(res.data.last_page || res.data.meta.last_page);
+      })
+      .catch(ErrorHandler);
+  };
+
+  const fetchDataWithParams = (newParams: typeof params) => {
+    if (!window) {
+      console.error("No Window found on useSearch:fetchData()");
+      return;
+    }
+
+    axios
+      .get(url, {
+        params: {
+          search_value: search.value,
+          search_date: search.date,
+          page: currentPage,
+          ...params,
+          ...newParams,
+        },
+      })
+      .then((res) => {
+        dataSet(res.data.data || res.data);
+        if (!noPagination)
+          totalPageCountSet(res.data.last_page || res.data.meta.last_page);
       })
       .catch(ErrorHandler);
   };
@@ -84,5 +119,14 @@ export default function useSearch({ url }: ISearchProps) {
     );
   }, [search, currentPage]);
 
-  return { SearchBar, data, paginator };
+  return {
+    SearchBar,
+    data,
+    paginator,
+    search,
+    fetchDataWithParams,
+    refresh: () => {
+      fetchData(search);
+    },
+  };
 }

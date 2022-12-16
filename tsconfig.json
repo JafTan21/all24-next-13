@@ -20,6 +20,6 @@
       }
     ],
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(user)/home/Notice.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(user)/home/Notice.jsx", "app/(user)/more-games/useWheel.jsx", "app/(user)/more-games/useWheel.jsx", "app/(user)/spinner/SpinnerRules.jsx"],
   "exclude": ["node_modules"]
 }

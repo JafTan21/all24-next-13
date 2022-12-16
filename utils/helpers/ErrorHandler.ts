@@ -9,7 +9,7 @@ export default function ErrorHandler(
   const notificationFunction = withSwal ? swalError : errorNotification;
 
   if (!errors) {
-    notificationFunction(err.message);
+    notificationFunction(err?.message);
     return;
   }
 

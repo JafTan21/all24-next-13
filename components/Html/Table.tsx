@@ -7,25 +7,43 @@ export default function Table({
   children,
 }: IChildren & {
   header: ReactElement;
-  paginator: ReactElement;
+  paginator?: ReactElement;
 }) {
   return (
-    <div className="mx-2 mt-5 w-screen-full md:mx-auto md:w-4/5 ">
-      <div className="flex flex-col">
-        <div className="overflow-x-auto shadow-md sm:rounded-lg overflow-scroll">
-          <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden ">
-              <table className="min-w-full whitespace-nowrap text-center divide-y divide-gray-200 table-fixed ">
-                <thead className="text-center bg-gray-100">{header}</thead>
-                <tbody className="bg-white divide-y divide-gray-200 ">
-                  {children}
-                </tbody>
-              </table>
-            </div>
-            <div className="my-3">{paginator}</div>
-          </div>
-        </div>
-      </div>
+    <div className="mx-2 overflow-scroll">
+      <table className="min-w-full whitespace-nowrap text-center divide-y divide-gray-200 table-striped">
+        <thead className="text-center bg-gray-100">{header}</thead>
+        <tbody className="bg-white divide-y divide-gray-200 ">{children}</tbody>
+      </table>
+      <div className="my-3">{paginator}</div>
     </div>
   );
 }
+
+export const AdminTable = ({
+  header,
+  paginator,
+  children,
+  searchBar,
+  beforeSearchBar,
+  title,
+}: IChildren & {
+  header: ReactElement;
+  searchBar?: ReactElement;
+  paginator?: ReactElement;
+  beforeSearchBar?: ReactElement;
+  title?: string;
+}) => {
+  return (
+    <div className="m-2">
+      {title && <p className="text-2xl text-gray-700 mx-2">{title}</p>}
+      <div className="bg-white px-2">
+        {beforeSearchBar}
+        {searchBar}
+        <Table header={header} paginator={paginator}>
+          {children}
+        </Table>
+      </div>
+    </div>
+  );
+};

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IGame } from "../../../libs/Models/Game";
 import { IoLogoGameControllerB, IoMdFootball } from "react-icons/io";
 import { BiTimer } from "react-icons/bi";
@@ -11,6 +11,9 @@ import GameGroup from "./GameGroup";
 import LiveIcon from "../../../assets/icons/live.png";
 import { Status } from "../../../libs/Status";
 import ToastWrapper from "../../../components/Wrappers/ToastWrapper";
+import { IMultibet, MultibetContext } from "./Multibet";
+import MultibetButton from "./MultibetButton";
+import { useWebSocket } from "../../WebSocket";
 
 export default function Games({
   initalGames,
@@ -20,21 +23,28 @@ export default function Games({
   const [games, gamesSet] = useState(initalGames);
   const [showingAll, showingAllSet] = useState(true);
 
-  const all = useMemo(() => Object.values(games || []), [games]);
+  const [betsForMultibet, betsForMultibetSet] = useState<IMultibet[]>([]);
+
+  const all = useMemo(() => games || [], [games]);
+
   const live = useMemo(
-    () => all.filter((game) => game.status == Status.Live),
+    () => Object.values(all).filter((game) => game.status == Status.Live),
     [all]
   );
   const upcoming = useMemo(
-    () => all.filter((game) => game.status == Status.Upcoming),
+    () => Object.values(all).filter((game) => game.status == Status.Upcoming),
     [all]
   );
+
+  const { socket } = useWebSocket();
+  // todo
+  useEffect(() => {}, []);
 
   return (
     <ToastWrapper>
       <div className="flex py-3 text-white bg-primary">
         <button
-          onClick={() => showingAllSet((prev) => !prev)}
+          onClick={() => showingAllSet(true)}
           className={
             " mx-2 flex justify-center items-center space-x-1 text-lg" +
             (showingAll ? " border-b-2 border-green-600" : "")
@@ -44,7 +54,7 @@ export default function Games({
         </button>
 
         <button
-          onClick={() => showingAllSet((prev) => !prev)}
+          onClick={() => showingAllSet(false)}
           className={
             " mx-2 flex justify-center items-center space-x-1 text-lg" +
             (!showingAll ? " border-b-2 border-green-600" : "")
@@ -68,10 +78,19 @@ export default function Games({
         </Link>
       </div>
 
-      <div className="flex flex-row justify-center  flex-wrap mt-2">
-        <GameGroup name="Live" icon={LiveIcon} games={live} />
-        {showingAll && <GameGroup name="Upcoming" games={upcoming} />}
-      </div>
+      <MultibetContext.Provider
+        value={{
+          betsForMultibetSet,
+          betsForMultibet,
+        }}
+      >
+        <div className="flex flex-row justify-center  flex-wrap mt-2">
+          <GameGroup name="Live" icon={LiveIcon} initialGames={live} />
+          {showingAll && <GameGroup name="Upcoming" initialGames={upcoming} />}
+        </div>
+
+        <MultibetButton />
+      </MultibetContext.Provider>
     </ToastWrapper>
   );
 }

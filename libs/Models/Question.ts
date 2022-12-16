@@ -17,6 +17,12 @@ export interface IQuestion {
   total_limit: number;
   added_by_email: string;
 
+  bets_count?: number;
+  multibets_count?: number;
+
+  bets_amount?: number;
+  possible_return?: number;
+
   answers: {
     [id: number]: IAnswer;
   };

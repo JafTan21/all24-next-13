@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IAnswer } from "../../../libs/Models/Answer";
 import { AiOutlineLeft } from "react-icons/ai";
 import { IQuestion } from "../../../libs/Models/Question";
@@ -11,6 +11,10 @@ import useForm from "../../../hooks/useForm";
 import axios from "axios";
 import Image from "next/image";
 import { successNotification } from "../../../utils/helpers/NotificationHelper";
+import { TailSpin } from "react-loader-spinner";
+import { IMultibet, MultibetContext } from "./Multibet";
+import ErrorHandler from "../../../utils/helpers/ErrorHandler";
+import AppConfig from "../../../app.config";
 
 interface Props {
   show: boolean;
@@ -38,10 +42,14 @@ export default function BetModal({
     },
   };
 
+  const [isSelecting, isSelectingSet] = useState(false);
+
   const { state, onChange, onSubmit, updateState, isSubmitting } = useForm({
     initialState: {
       amount: 100,
     },
+    resetOnResolve: true,
+    submitAfter: AppConfig.waiting_time,
     submit: (state) => {
       return new Promise((resolve, reject) => {
         axios
@@ -61,6 +69,31 @@ export default function BetModal({
     },
   });
 
+  const SelectForMultibet = () => {
+    isSelectingSet(true);
+    axios
+      .post("/user/check-answer-id-for-multi", {
+        prevIds: betsForMultibet.map((bet) => bet.answer.id),
+        newId: answer.id,
+      })
+      .then((res) => {
+        if (!answer) return;
+
+        const temp: IMultibet = {
+          game,
+          question,
+          answer,
+        };
+        betsForMultibetSet([...betsForMultibet, temp]);
+      })
+      .catch(ErrorHandler)
+      .finally(() => {
+        isSelectingSet(false);
+      });
+  };
+
+  const { betsForMultibet, betsForMultibetSet } = useContext(MultibetContext);
+
   return (
     <AnimatePresence>
       {show && (
@@ -71,7 +104,7 @@ export default function BetModal({
           transition={{ duration: 0.3 }}
           style={{ zIndex: 100 }}
           onClick={() => showSet(false)}
-          className="absolute top-0 left-0 right-0 w-screen h-screen scro"
+          className="absolute top-0 left-0 right-0 w-screen h-screen"
         >
           <BackBox
             title="Place Bet"
@@ -83,9 +116,11 @@ export default function BetModal({
                 <div className="px-2 py-1">
                   <div style={{ wordBreak: "break-word" }}>
                     <div className="flex items-center">
-                      <img
+                      <Image
                         alt={game.game_type.name}
                         src={game.game_type.img}
+                        height="40"
+                        width="40"
                         className="inline rounded w-[40px] h-[40px]"
                       />
 
@@ -166,7 +201,29 @@ export default function BetModal({
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <SubmitButton isSubmitting={false} />
+                    <SubmitButton isSubmitting={isSubmitting} />
+                    <button
+                      onClick={SelectForMultibet}
+                      type="button"
+                      disabled={
+                        answer &&
+                        betsForMultibet.some(
+                          (bet) => bet.answer.id == answer.id
+                        )
+                      }
+                      className="flex items-center justify-center px-2 py-1 mt-2 text-gray-800 bg-yellow-300 rounded"
+                    >
+                      {isSelecting ? (
+                        <TailSpin height="20" color="red" ariaLabel="loading" />
+                      ) : answer &&
+                        betsForMultibet.some(
+                          (bet) => bet.answer.id == answer.id
+                        ) ? (
+                        "selected"
+                      ) : (
+                        "select for multibet"
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>

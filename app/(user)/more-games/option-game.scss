@@ -1,0 +1,66 @@
+.games {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  background-image: url("./games-container-bg.jpg");
+  padding: 40px 20px;
+}
+
+@keyframes opacityAnimation {
+  0% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.4;
+  }
+}
+
+.game {
+  border: 1px solid #b5b8b3;
+  border-radius: 18px;
+  width: 300px;
+  height: auto;
+  padding: 10px 0 25px 0;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 10px 15px 0 #585858;
+  transition: 0.8s;
+  margin: 30px;
+}
+
+.game:hover {
+  transform: scale(1.03);
+}
+
+.game img {
+  display: block;
+  animation: opacityAnimation 2s linear infinite;
+}
+
+.game .game-link {
+  font-size: 16px;
+  font-weight: 600;
+  height: 50px;
+  line-height: 50px;
+  width: 50%;
+  color: #fff;
+  text-align: center;
+  border: 0px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+  background: linear-gradient(to left, #1c294e, #1c294e);
+}
+
+.game .game-link:hover {
+  background: linear-gradient(to right, #ff344d, #d2273c);
+  color: #fff;
+}

@@ -1,25 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import ErrorHandler from "../utils/helpers/ErrorHandler";
 
 export default function useForm<T>({
   initialState,
   submit,
+
+  resetOnResolve,
+  submitAfter,
+  shouldConfirmBeforeSubmitting,
 }: {
   initialState: T;
   submit: (state: T) => Promise<any>;
+
+  resetOnResolve?: boolean;
+  submitAfter?: number;
+  shouldConfirmBeforeSubmitting?: boolean;
 }) {
   const [state, stateSet] = useState<T>(initialState);
   const [isSubmitting, isSubmittingSet] = useState(false);
 
   const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     stateSet((prev) => {
       return {
         ...prev,
         [e.target.name]:
-          e.target.type == "number" ? Number(e.target.value) : e.target.value,
+          e.target.type == "number"
+            ? Number(e.target.value) || undefined
+            : e.target.value,
       };
     });
   };
@@ -35,22 +47,46 @@ export default function useForm<T>({
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    submitWithoutForm();
+  };
+
+  const submitWithoutForm = () => {
+    submitWithState({});
+  };
+
+  const update = (newState: Partial<T>) => {
+    submitWithState(newState);
+  };
+
+  const submitWithState = (newState: Partial<T>) => {
+    if (shouldConfirmBeforeSubmitting) {
+      if (!window.confirm("Are you sure?")) {
+        return;
+      }
+    }
 
     isSubmittingSet(true);
 
-    submit(state)
-      .then((response) => {
-        // console.log(response);
-      })
-      .catch(ErrorHandler)
-      .finally(() => isSubmittingSet(false));
+    setTimeout(() => {
+      submit({ ...state, ...newState })
+        .then((response) => {
+          if (resetOnResolve) {
+            stateSet(initialState);
+          }
+        })
+        .catch(ErrorHandler)
+        .finally(() => isSubmittingSet(false));
+    }, submitAfter);
   };
 
   return {
     state,
     onChange,
     updateState,
+    update,
     isSubmitting,
     onSubmit,
+    submitWithoutForm,
+    submitWithState,
   };
 }

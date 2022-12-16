@@ -2,13 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .flex-center-center {
+    @apply flex justify-center items-center;
+  }
+
+  .admin-game-btn {
+    @apply ml-1 inline px-1 rounded;
+  }
+}
+
 body {
   background: #e5e8ed;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 @keyframes animate-loading {
   0% {

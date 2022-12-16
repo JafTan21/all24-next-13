@@ -19,5 +19,14 @@ export interface IAnswer {
 
   cashout_rate: number;
 
+  bets_count?: number;
+  multibets_count?: number;
+
+  bets_amount?: number;
+  possible_return?: number;
+
+  cashout_amount?: number;
+  refund_amount?: number;
+
   total_limit: number;
 }

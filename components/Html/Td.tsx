@@ -2,7 +2,7 @@ import { IChildren } from "../../libs/interfaces";
 
 export default function Td({
   children,
-  className,
+  className = "",
 }: IChildren & { className?: string }) {
   return (
     <td

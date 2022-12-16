@@ -15,3 +15,30 @@ export const Status = {
   Refund: 8,
   Cashout: 9,
 };
+
+export const getStatusText = (status: number) => {
+  switch (Number(status)) {
+    case Status.Approved:
+      return "Approved";
+    case Status.Rejected:
+      return "Rejected";
+    case Status.Pending:
+      return "Pending";
+    case Status.Live:
+      return "Live";
+    case Status.Upcoming:
+      return "Upcoming";
+    case Status.Closed:
+      return "Closed";
+    case Status.Win:
+      return "Win";
+    case Status.Lose:
+      return "Lose";
+    case Status.Refund:
+      return "Refund";
+    case Status.Cashout:
+      return "Cashout";
+    default:
+      return "Unknown";
+  }
+};

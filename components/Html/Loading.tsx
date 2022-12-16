@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { ReactElement } from "react";
+import { Rings } from "react-loader-spinner";
 import icon from "../../assets/favicon.png";
 
 interface Props {
@@ -35,3 +38,7 @@ export default function Loading(props: Props) {
     </div>
   );
 }
+
+export const Submitting = (): ReactElement => {
+  return <Rings ariaLabel="loading-indicator" />;
+};
