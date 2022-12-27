@@ -1,10 +1,7 @@
 import axios from "axios";
 import Image from "next/image";
-import React, { useState } from "react";
-import { AiFillCloseCircle, AiOutlineCloseCircle } from "react-icons/ai";
-import { BiCloset } from "react-icons/bi";
-import { GrClose } from "react-icons/gr";
-import { mutate } from "swr";
+import React, { useEffect, useState } from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import Collapsible from "../../../../../components/Html/Collapsible";
 import ToggleButton from "../../../../../components/Html/ToggleButton";
 import StopPropagation from "../../../../../components/Wrappers/StopPropagation";
@@ -13,6 +10,7 @@ import { IGame } from "../../../../../libs/Models/Game";
 import { IQuestion } from "../../../../../libs/Models/Question";
 import { Status } from "../../../../../libs/Status";
 import ErrorHandler from "../../../../../utils/helpers/ErrorHandler";
+import { useSocketUpdater } from "../../../../../utils/helpers/SocketHelper";
 import AddQuestion from "./AddQuestion";
 import EditGame from "./EditGame";
 import Question from "./Question";
@@ -58,6 +56,24 @@ export default function Game({
   refresh: () => void;
 }) {
   const [game, gameSet] = useState(initialGame);
+  useSocketUpdater(
+    game,
+    [
+      "id",
+      "team1",
+      "team2",
+      "live_score",
+      "status",
+      "can_bet",
+      "short_description",
+      "starting_time",
+      "ending_time",
+      "show_to_users",
+      "game_break_time",
+      "game_break_time_status",
+    ],
+    "update-game"
+  );
 
   const addQuestion = (q: IQuestion) => {
     gameSet((prev) => {

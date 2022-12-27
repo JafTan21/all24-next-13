@@ -19,6 +19,10 @@ import useModal, { Modal } from "../../../../../hooks/useModal";
 import { IAnswer } from "../../../../../libs/Models/Answer";
 import { IQuestion } from "../../../../../libs/Models/Question";
 import { Status } from "../../../../../libs/Status";
+import {
+  CheckObjectReadyForSocketUpdate,
+  useSocketUpdater,
+} from "../../../../../utils/helpers/SocketHelper";
 
 const AnswerContext = createContext<{
   answer: IAnswer;
@@ -62,6 +66,23 @@ export default function Answer({
 }) {
   const [answer, answerSet] = useState(initialAnswer);
   useEffect(() => answerSet(initialAnswer), [initialAnswer]);
+
+  useSocketUpdater(
+    answer,
+    [
+      "id",
+      "answer",
+      "rate",
+      "cashout_rate",
+      "can_bet",
+      "starting_time",
+      "ending_time",
+      "show_to_users",
+      "status",
+    ],
+    "update-answer"
+  );
+
   const thClasses = "border border-slate-200 px-1";
 
   const get_bg = () => {

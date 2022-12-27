@@ -22,7 +22,7 @@ const AdminConfig = {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // distDir: "build",
+  distDir: "build",
   swcMinify: true,
 
   experimental: {

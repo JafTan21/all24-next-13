@@ -1,8 +1,11 @@
+"use client";
+
 import React, { useState } from "react";
-import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import { BsChevronDown } from "react-icons/bs";
 import Collapsible from "../../../components/Html/Collapsible";
 import { IGame } from "../../../libs/Models/Game";
 import { IQuestion } from "../../../libs/Models/Question";
+import { useSocketReciever } from "../../../utils/helpers/SocketHelper";
 import Answer from "./Answer";
 
 export default function Question({
@@ -13,6 +16,9 @@ export default function Question({
   game: IGame;
 }) {
   const [question, questionSet] = useState(initialQuestion);
+  useSocketReciever(`update-question-${question.id}`, (data) => {
+    questionSet((prev) => ({ ...prev, ...data }));
+  });
 
   return (
     <Collapsible

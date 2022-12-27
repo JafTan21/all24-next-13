@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Rings } from "react-loader-spinner";
@@ -7,6 +9,7 @@ import { IGame } from "../../../libs/Models/Game";
 import { IQuestion } from "../../../libs/Models/Question";
 import ErrorHandler from "../../../utils/helpers/ErrorHandler";
 import { errorNotification } from "../../../utils/helpers/NotificationHelper";
+import { useSocketReciever } from "../../../utils/helpers/SocketHelper";
 import BetModal from "./BetModal";
 import { MultibetContext } from "./Multibet";
 
@@ -22,6 +25,9 @@ export default function Answer({
   question: IQuestion;
 }) {
   const [answer, answerSet] = useState(initialAnswer);
+  useSocketReciever(`update-answer-${initialAnswer.id}`, (data) => {
+    answerSet((prev) => ({ ...prev, ...data }));
+  });
 
   const [show, showSet] = useState(false);
   const { user, isLoading } = useUser();

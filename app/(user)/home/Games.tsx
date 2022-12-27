@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IGame } from "../../../libs/Models/Game";
 import { IoLogoGameControllerB, IoMdFootball } from "react-icons/io";
 import { BiTimer } from "react-icons/bi";
@@ -13,7 +13,6 @@ import { Status } from "../../../libs/Status";
 import ToastWrapper from "../../../components/Wrappers/ToastWrapper";
 import { IMultibet, MultibetContext } from "./Multibet";
 import MultibetButton from "./MultibetButton";
-import { useWebSocket } from "../../WebSocket";
 
 export default function Games({
   initalGames,
@@ -35,10 +34,6 @@ export default function Games({
     () => Object.values(all).filter((game) => game.status == Status.Upcoming),
     [all]
   );
-
-  const { socket } = useWebSocket();
-  // todo
-  useEffect(() => {}, []);
 
   return (
     <ToastWrapper>

@@ -2,9 +2,9 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
 export const WebSocketContext = createContext<{
-  socket: Socket | undefined;
+  socket: Socket | null;
 }>({
-  socket: undefined,
+  socket: null,
 });
 
 export const useWebSocket = () => {
@@ -13,11 +13,14 @@ export const useWebSocket = () => {
 };
 
 export const getFirstSocketForLayout = () => {
-  const [socket, socketSet] = useState<Socket | undefined>(undefined);
+  const [socket, socketSet] = useState<Socket | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/socket");
-    socketSet(io());
+    try {
+      socketSet(io("http://localhost:2000/"));
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   return { socket };

@@ -1,5 +1,6 @@
 export const URLs = {
-  backend: "https://backend.gameingserver.xyz/public/api",
+  // backend: "https://backend.gameingserver.xyz/public/api",
+  backend: "http://localhost:8000/api",
 };
 
 const AppConfig = {

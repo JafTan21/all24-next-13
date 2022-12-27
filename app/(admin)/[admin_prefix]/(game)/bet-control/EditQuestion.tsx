@@ -34,7 +34,9 @@ export default function EditQuestion({
     },
   });
 
-  useEffect(() => updateState(initialQuestion), [initialQuestion]);
+  useEffect(() => {
+    updateState(initialQuestion);
+  }, [initialQuestion]);
 
   return (
     <>

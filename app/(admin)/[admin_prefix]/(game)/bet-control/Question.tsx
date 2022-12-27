@@ -11,6 +11,7 @@ import { IGame } from "../../../../../libs/Models/Game";
 import { IQuestion } from "../../../../../libs/Models/Question";
 import { Status } from "../../../../../libs/Status";
 import ErrorHandler from "../../../../../utils/helpers/ErrorHandler";
+import { useSocketUpdater } from "../../../../../utils/helpers/SocketHelper";
 import AddAnswer from "./AddAnswer";
 import Answer from "./Answer";
 import EditQuestion from "./EditQuestion";
@@ -24,6 +25,19 @@ export default function Question({
   initialGame: IGame;
 }) {
   const [question, questionSet] = useState(initialQuestion);
+  useSocketUpdater(
+    question,
+    [
+      "id",
+      "question",
+      "can_bet",
+      "starting_time",
+      "ending_time",
+      "show_to_users",
+      "status",
+    ],
+    "update-question"
+  );
 
   const thClasses = "text-gray-600 font-normal px-2 border border-slate-200";
 

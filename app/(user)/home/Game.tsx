@@ -1,10 +1,16 @@
+"use client";
+
 import React, { useState } from "react";
 import Collapsible from "../../../components/Html/Collapsible";
 import { IGame } from "../../../libs/Models/Game";
+import { useSocketReciever } from "../../../utils/helpers/SocketHelper";
 import Question from "./Question";
 
 export default function Game({ initialGame }: { initialGame: IGame }) {
   const [game, gameSet] = useState(initialGame);
+  useSocketReciever(`update-game-${initialGame.id}`, (data) => {
+    gameSet((prev) => ({ ...prev, ...data }));
+  });
 
   return (
     <Collapsible
