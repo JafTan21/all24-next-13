@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Footer from "./Footer";
 import Header from "./Header";
 
 export default function UserLayout({ children }: { children: ReactNode }) {
@@ -6,7 +7,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
     <>
       <Header />
       <main>{children}</main>
-      <footer>footer</footer>
+      <Footer />
     </>
   );
 }

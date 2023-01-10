@@ -33,7 +33,7 @@ export default function LeftMenu() {
         <button className="ml-1 text-3xl text-white" onClick={open}>
           <HiMenu />
         </button>
-        <Link href="/">
+        <Link href="/home">
           <Image
             style={{
               maxWidth: "120px",

@@ -2,7 +2,6 @@
 
 import React from "react";
 import Td from "../../../../components/Html/Td";
-import ToastWrapper from "../../../../components/Wrappers/ToastWrapper";
 import Table from "../../../../components/Html/Table";
 import useSearch from "../../../../hooks/useSearch";
 import { Status } from "../../../../libs/Status";
@@ -12,6 +11,8 @@ import useForm from "../../../../hooks/useForm";
 import axios from "axios";
 import { successNotification } from "../../../../utils/helpers/NotificationHelper";
 import UserPageWrapper from "../../../../components/Wrappers/UserPageWrapper";
+import { useSocketReciever } from "../../../../utils/helpers/SocketHelper";
+// import { useSocketReciever } from "../../../../utils/helpers/SocketHelper";
 
 export default function Statement() {
   const { data, SearchBar, paginator } = useSearch({ url: "/user/bet" });
@@ -62,6 +63,11 @@ const Maker = ({ bet }: { bet: IBet }) => {
       });
     },
   });
+
+  useSocketReciever(`edit-cashout-rate-of-${bet.answer_id}`, (data) => {
+    console.log(data);
+  });
+
   return (
     <tr className="hover:bg-gray-100">
       <Td className="w-4 p-4">{bet.id}</Td>

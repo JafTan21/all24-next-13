@@ -21,7 +21,7 @@ export const CheckObjectReadyForSocketUpdate = (
   return true;
 };
 
-const makeSafeData = (obj: TObj, fields: string[]) => {
+export const makeSafeData = (obj: TObj, fields: string[]) => {
   const safeObj = { ...obj };
   Object.keys(safeObj).forEach((key) => {
     if (!fields.includes(key)) {
@@ -71,7 +71,6 @@ export const useSocketReciever = (
 
   useEffect(() => {
     if (!socket) return;
-    console.log("recieve: " + key);
 
     socket.on(key, handler);
 

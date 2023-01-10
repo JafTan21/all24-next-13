@@ -1,12 +1,14 @@
 "use client";
 
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import moment from "moment";
+import React, { useContext, useEffect, useState } from "react";
 import { Rings } from "react-loader-spinner";
 import useUser from "../../../hooks/api/useUser";
 import { IAnswer } from "../../../libs/Models/Answer";
 import { IGame } from "../../../libs/Models/Game";
 import { IQuestion } from "../../../libs/Models/Question";
+import { Status } from "../../../libs/Status";
 import ErrorHandler from "../../../utils/helpers/ErrorHandler";
 import { errorNotification } from "../../../utils/helpers/NotificationHelper";
 import { useSocketReciever } from "../../../utils/helpers/SocketHelper";
@@ -76,6 +78,44 @@ export default function Answer({
     }
   };
 
+  //
+  const [lastRate, lastRateSet] = useState(() => answer.rate);
+  const [rateBg, rateBgSet] = useState("rate-bg text-white");
+
+  const [bettable, bettableSet] = useState(() => {
+    return game?.can_bet && question?.can_bet;
+  });
+  useEffect(() => {
+    bettableSet((prev) => {
+      return game?.can_bet && question?.can_bet;
+    });
+  }, [game, question]);
+
+  useEffect(() => {
+    let color = "rate-bg text-white";
+
+    if (answer.rate > lastRate) color = "rate-increased-bg text-gray-800";
+    if (answer.rate < lastRate) color = "bg-red-300 text-gray-700";
+
+    if (!bettable) color = "bg-red-400 text-gray-700";
+
+    rateBgSet(color);
+    setTimeout(() => {
+      rateBgSet(() => {
+        return bettable ? "rate-bg text-white" : "bg-red-400 text-gray-700";
+      });
+    }, 1500);
+    lastRateSet(answer.rate);
+  }, [answer.rate, bettable]);
+
+  if (
+    !answer.show_to_users ||
+    answer.status == Status.Closed ||
+    (answer.ending_time && moment(answer.ending_time).isBefore())
+  ) {
+    return null;
+  }
+
   return (
     <>
       <button
@@ -119,7 +159,7 @@ export default function Answer({
             </div>
 
             <span
-              className={`px-4 my-1 rounded text-white rate-bg`}
+              className={`px-4 my-1 rounded ${rateBg}`}
               style={{
                 fontSize: 14,
                 width: 60,

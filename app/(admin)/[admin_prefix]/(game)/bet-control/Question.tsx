@@ -6,7 +6,7 @@ import SubmitButton from "../../../../../components/Html/SubmitButton";
 import Td from "../../../../../components/Html/Td";
 import ToggleButton from "../../../../../components/Html/ToggleButton";
 import StopPropagation from "../../../../../components/Wrappers/StopPropagation";
-import useForm from "../../../../../hooks/useForm";
+import useForm, { verifyCSRF } from "../../../../../hooks/useForm";
 import { IGame } from "../../../../../libs/Models/Game";
 import { IQuestion } from "../../../../../libs/Models/Question";
 import { Status } from "../../../../../libs/Status";
@@ -42,12 +42,14 @@ export default function Question({
   const thClasses = "text-gray-600 font-normal px-2 border border-slate-200";
 
   const update = (newData: Partial<IQuestion>) => {
-    axios
-      .put(`/admin/question/${question.id}`, { ...question, ...newData })
-      .then((res) => {
-        questionSet(res.data.question);
-      })
-      .catch(ErrorHandler);
+    verifyCSRF(() => {
+      axios
+        .put(`/admin/question/${question.id}`, { ...question, ...newData })
+        .then((res) => {
+          questionSet(res.data.question);
+        })
+        .catch(ErrorHandler);
+    });
   };
 
   if (question.status == Status.Closed) return null;

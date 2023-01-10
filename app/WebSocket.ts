@@ -17,7 +17,7 @@ export const getFirstSocketForLayout = () => {
 
   useEffect(() => {
     try {
-      socketSet(io("http://localhost:2000/"));
+      socketSet(io("https://server.gameingserver.xyz"));
     } catch (err) {
       console.log(err);
     }

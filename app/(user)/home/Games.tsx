@@ -13,6 +13,7 @@ import { Status } from "../../../libs/Status";
 import ToastWrapper from "../../../components/Wrappers/ToastWrapper";
 import { IMultibet, MultibetContext } from "./Multibet";
 import MultibetButton from "./MultibetButton";
+import { useSocketReciever } from "../../../utils/helpers/SocketHelper";
 
 export default function Games({
   initalGames,
@@ -21,6 +22,24 @@ export default function Games({
 }) {
   const [games, gamesSet] = useState(initalGames);
   const [showingAll, showingAllSet] = useState(true);
+
+  useSocketReciever("add-new-game", (data) => {
+    gamesSet((prev) => {
+      return {
+        ...prev,
+        [data.id]: data,
+      };
+    });
+  });
+
+  useSocketReciever("change-game-status", (data) => {
+    gamesSet((prev) => {
+      return {
+        ...prev,
+        [data.id]: { ...prev[data.id], ...data },
+      };
+    });
+  });
 
   const [betsForMultibet, betsForMultibetSet] = useState<IMultibet[]>([]);
 

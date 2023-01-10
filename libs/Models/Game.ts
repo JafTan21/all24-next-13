@@ -30,7 +30,7 @@ export interface IGame {
   total_limit: number;
 
   game_break_time: number;
-  game_break_time_status: number;
+  game_break_time_status: boolean;
 
   total_questions_count?: number;
   total_answers_count?: number;

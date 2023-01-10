@@ -8,9 +8,12 @@ import useForm from "../../../../../hooks/useForm";
 import useModal, { Modal } from "../../../../../hooks/useModal";
 import { IGame } from "../../../../../libs/Models/Game";
 import { Status } from "../../../../../libs/Status";
+import { useWebSocket } from "../../../../WebSocket";
 
 export default function AddGame({ addGame }: { addGame: (g: IGame) => void }) {
   const { gameTypes } = useGameTypes();
+
+  const { socket } = useWebSocket();
 
   const props = useModal({ title: "Add Game" });
   const { state, onChange, onSubmit, isSubmitting } = useForm<Partial<IGame>>({
@@ -29,6 +32,7 @@ export default function AddGame({ addGame }: { addGame: (g: IGame) => void }) {
         axios
           .post("/admin/game", state)
           .then((res) => {
+            socket?.emit("add-new-game", { data: res.data.game });
             addGame(res.data.game);
             resolve(res.data);
             props.closeModal();

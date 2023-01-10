@@ -9,18 +9,24 @@ import { Status } from "../../../../../libs/Status";
 import AddGame from "./AddGame";
 import GameGroup from "./GameGroup";
 
-export default function BetControl() {
+export default function BetControl(props: any) {
+  const is_hidden_page: boolean = props?.searchParams?.hidden == "true";
   const {
     SearchBar,
     data: initialGames,
     paginator,
     refresh,
+    fetchDataWithParams,
   } = useSearch<{ [id: number]: IGame }>({
     url: "/admin/game",
     params: {
-      is_hidden_page: "false",
+      is_hidden_page: is_hidden_page,
     },
   });
+
+  useEffect(() => {
+    fetchDataWithParams({ is_hidden_page });
+  }, [is_hidden_page]);
 
   const [games, gamesSet] = useState(initialGames);
 
@@ -39,7 +45,7 @@ export default function BetControl() {
   }, [initialGames]);
 
   return (
-    <AdminPageWrapper>
+    <AdminPageWrapper title={`Bet Control ${is_hidden_page ? "Hidden" : ""}`}>
       <div className="m-2 bg-white p-2 rounded shadow">
         <AddGame
           addGame={(game) => {
@@ -69,3 +75,5 @@ export default function BetControl() {
     </AdminPageWrapper>
   );
 }
+
+export const revalidate = 0;

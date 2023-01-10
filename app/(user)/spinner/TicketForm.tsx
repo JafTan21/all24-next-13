@@ -184,7 +184,6 @@ export const TicketForm = React.memo(() => {
               zIndex: 2,
             }}
           >
-            {" "}
             {(amount || 0) * selected.rate}$
           </b>
         </div>

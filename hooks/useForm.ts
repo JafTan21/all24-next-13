@@ -1,6 +1,19 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import ErrorHandler from "../utils/helpers/ErrorHandler";
+
+export const verifyCSRF = (callback: () => void) => {
+  axios
+    .get("https://backend.gameingserver.xyz/public/sanctum/csrf-cookie")
+    .then((response) => {
+      try {
+        callback();
+      } catch (e) {
+        console.error(e);
+      }
+    });
+};
 
 export default function useForm<T>({
   initialState,
@@ -68,14 +81,16 @@ export default function useForm<T>({
     isSubmittingSet(true);
 
     setTimeout(() => {
-      submit({ ...state, ...newState })
-        .then((response) => {
-          if (resetOnResolve) {
-            stateSet(initialState);
-          }
-        })
-        .catch(ErrorHandler)
-        .finally(() => isSubmittingSet(false));
+      verifyCSRF(() => {
+        submit({ ...state, ...newState })
+          .then((response) => {
+            if (resetOnResolve) {
+              stateSet(initialState);
+            }
+          })
+          .catch(ErrorHandler)
+          .finally(() => isSubmittingSet(false));
+      });
     }, submitAfter);
   };
 

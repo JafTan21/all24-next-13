@@ -16,7 +16,7 @@ export default function MultibetButton() {
           multibet ({betsForMultibet.length})
         </button>
       </div>
-      <MultibetModal show={show} showSet={showSet} />{" "}
+      <MultibetModal show={show} showSet={showSet} />
     </>
   ) : null;
 }

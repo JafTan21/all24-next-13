@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { ReactElement } from "react";
+import { getPrefix } from "../../utils/admin/adminHelpers";
 
 interface Props {
   icon?: ReactElement;
@@ -9,9 +10,8 @@ interface Props {
   close: () => void;
 }
 
-const hrefWithAdminPrefix = (url: string) => {
-  const pathname = usePathname();
-  const prefix = pathname?.split("/")[1];
+export const hrefWithAdminPrefix = (url: string) => {
+  const prefix = getPrefix();
 
   const nweUrl = (url.startsWith("/") ? "" : "/") + url;
 

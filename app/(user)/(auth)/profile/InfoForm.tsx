@@ -80,7 +80,7 @@ const InfoForm = () => {
           Sponsor: {state.sponsor_username}
         </div>
         <div className="my-2 text-gray-900 text-sm">
-          Is Active:{" "}
+          Is Active:
           {state.is_active ? (
             <span className="text-green-500">Active</span>
           ) : (
@@ -88,7 +88,7 @@ const InfoForm = () => {
           )}
         </div>
         <div className="my-2 text-gray-900 text-sm">
-          Is Super ID:{" "}
+          Is Super ID:
           {state.is_super ? (
             <span className="text-blue-500">Super ID</span>
           ) : (

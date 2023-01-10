@@ -225,7 +225,7 @@ const Menus = ({ close }: { close: () => void }) => {
                 close={close}
               />
               <SidebarLink
-                href="bet-control-hidden"
+                href="bet-control?hidden=true"
                 text="Hidden Bet Control"
                 icon={<FaGamepad />}
                 close={close}

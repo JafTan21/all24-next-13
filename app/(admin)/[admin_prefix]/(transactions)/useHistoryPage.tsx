@@ -34,7 +34,7 @@ export default function useHistoryPage({
               <b className="text-green-500">
                 {Object.entries(data).reduce((a, b) => {
                   return a + b[1].approved_amount;
-                }, 0)}{" "}
+                }, 0)}
               </b>
             </span>
             <span className="mx-2">
@@ -52,7 +52,7 @@ export default function useHistoryPage({
                   key={key}
                   trigger={
                     <div className="bg-blue-500 p-2 rounded text-white m-1 cursor-pointer">
-                      {key}: (Approved: {value.approved_amount}) (Rejected:{" "}
+                      {key}: (Approved: {value.approved_amount}) (Rejected:
                       {value.rejected_amount})
                     </div>
                   }

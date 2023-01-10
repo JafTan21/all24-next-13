@@ -87,7 +87,7 @@ const Maker = ({ row, refresh }: { row: IWithdraw; refresh: () => void }) => {
       <Td>{row.to}</Td>
       <Td>{row.method}</Td>
       <Td>{Number(row.amount).toFixed(2)}$</Td>
-      <Td>{row.date}</Td>{" "}
+      <Td>{row.date}</Td>
       <Td>
         <StatusText status={row.status} />
       </Td>

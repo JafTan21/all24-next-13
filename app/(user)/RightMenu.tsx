@@ -96,7 +96,7 @@ const Menus = ({ close }: { close: () => void }) => {
     <div>
       <SideLink
         close={close}
-        href="/"
+        href="/home"
         text="Home"
         icon={<HiHome fontSize={18} />}
       />
