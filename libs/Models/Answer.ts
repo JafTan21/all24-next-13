@@ -18,6 +18,7 @@ export interface IAnswer {
   status: number;
 
   cashout_rate: number;
+  is_cashout_on: boolean;
 
   bets_count?: number;
   multibets_count?: number;

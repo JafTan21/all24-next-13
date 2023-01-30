@@ -13,10 +13,12 @@ export interface IClub {
   id: number;
 
   is_active: boolean;
-  is_super: boolean;
 
+  is_super: boolean;
+  super_commission_rate?: number;
   owner_id?: number; // created by
   club_opening_limit?: number;
+  super_commission_earned?: number;
 
   //
   users_count?: number;

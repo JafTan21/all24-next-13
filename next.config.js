@@ -48,12 +48,12 @@ const nextConfig = {
       },
       {
         source: `${AdminConfig.GameAdminPrefix}`,
-        destination: `${AdminConfig.GameAdminPrefix}/bet-control`,
+        destination: `${AdminConfig.GameAdminPrefix}/bet-control/normal`,
         permanent: true,
       },
       {
         source: `${AdminConfig.CustomGameAdminPrefix}`,
-        destination: `${AdminConfig.CustomGameAdminPrefix}/bet-control`,
+        destination: `${AdminConfig.CustomGameAdminPrefix}/bet-control/normal`,
         permanent: true,
       },
       {

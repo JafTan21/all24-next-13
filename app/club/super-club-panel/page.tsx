@@ -7,6 +7,7 @@ import ClubPageWrapper from "../../../components/Wrappers/ClubPageWrapper";
 import useSearch from "../../../hooks/useSearch";
 import { IClub } from "../../../libs/Models/Club";
 import Add from "./Add";
+import ClubDashboard from "./Dashboard";
 
 export default function SuperClub() {
   const { data, paginator, SearchBar, refresh } = useSearch<IClub[]>({
@@ -15,6 +16,8 @@ export default function SuperClub() {
 
   return (
     <ClubPageWrapper>
+      <ClubDashboard />
+
       <div className="bg-white p-2 m-2">
         <Add refresh={refresh} />
         {SearchBar}
@@ -33,6 +36,7 @@ export default function SuperClub() {
             <Td>Is Active</Td>
             <Td>Commission rate</Td>
             <Td>Withdraw limit</Td>
+            <Td>Super Commission Earned</Td>
           </tr>
         }
       >
@@ -61,6 +65,7 @@ const Maker = ({ initialRow }: { initialRow: IClub }) => {
         <span>Min: {row.min_withdraw}</span> <br />
         <span>Max: {row.max_withdraw}</span>
       </Td>
+      <Td>{row.super_commission_earned}</Td>
     </tr>
   );
 };

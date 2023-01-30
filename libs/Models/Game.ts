@@ -46,6 +46,14 @@ export interface IGame {
   questions_count?: number;
   answers_count?: number;
 
+  youtube_embed_link?: string;
+  youtube_embed_on: boolean;
+
+  //
+  cashout_amount?: number;
+  refund_amount?: number;
+  //
+
   questions: {
     [id: number]: IQuestion;
   };

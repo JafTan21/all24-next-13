@@ -1,5 +1,5 @@
 import axios from "axios";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import AppConfig, { URLs } from "../../app.config";
 import { getCookie, removeCookies, setCookie } from "cookies-next";
 import { IUser } from "../../libs/Models/User";
@@ -29,6 +29,7 @@ export default function useUser() {
     logout: () => {
       removeCookies(AppConfig.user_token);
       mutate("/user/user", undefined);
+      window.location.href = "/";
     },
   };
 }

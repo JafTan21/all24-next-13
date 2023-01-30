@@ -23,7 +23,7 @@ interface IAllTransaction {
 
 export default function Statement() {
   const { data, SearchBar, paginator } = useSearch({
-    url: "/user/all-transaction",
+    url: "/club/all-transaction",
   });
 
   const header = (

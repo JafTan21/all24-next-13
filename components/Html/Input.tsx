@@ -1,4 +1,10 @@
-import { ReactElement, ReactNode } from "react";
+import {
+  MutableRefObject,
+  ReactElement,
+  ReactNode,
+  RefObject,
+  useEffect,
+} from "react";
 import { ChangeEventHandler } from "react";
 import { IChildren } from "../../libs/interfaces";
 
@@ -33,7 +39,11 @@ export default function Input(props: IInput) {
   );
 }
 
-export function AdminInput(props: IInput) {
+export function AdminInput(
+  props: IInput & {
+    ref?: RefObject<HTMLInputElement>;
+  }
+) {
   return (
     <div className="my-3 text-left">
       <p className="text-gray-900">{props.label}</p>
@@ -48,6 +58,7 @@ export function AdminInput(props: IInput) {
         placeholder={props.label}
         autoFocus={props.autoFocus}
         className="w-full min-w-[100px] text-sm border border-slate-200 rounded px-4 py-2 appearance-none focus:outline-0"
+        ref={props.ref}
       />
     </div>
   );

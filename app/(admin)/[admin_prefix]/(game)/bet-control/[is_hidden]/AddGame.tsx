@@ -1,14 +1,17 @@
 import axios from "axios";
 import React from "react";
 import { BiPlus } from "react-icons/bi";
-import { AdminInput, AdminSelect } from "../../../../../components/Html/Input";
-import SubmitButton from "../../../../../components/Html/SubmitButton";
-import useGameTypes from "../../../../../hooks/api/admin/useGameTypes";
-import useForm from "../../../../../hooks/useForm";
-import useModal, { Modal } from "../../../../../hooks/useModal";
-import { IGame } from "../../../../../libs/Models/Game";
-import { Status } from "../../../../../libs/Status";
-import { useWebSocket } from "../../../../WebSocket";
+import {
+  AdminInput,
+  AdminSelect,
+} from "../../../../../../components/Html/Input";
+import SubmitButton from "../../../../../../components/Html/SubmitButton";
+import useGameTypes from "../../../../../../hooks/api/admin/useGameTypes";
+import useForm from "../../../../../../hooks/useForm";
+import useModal, { Modal } from "../../../../../../hooks/useModal";
+import { IGame } from "../../../../../../libs/Models/Game";
+import { Status } from "../../../../../../libs/Status";
+import { useWebSocket } from "../../../../../WebSocket";
 
 export default function AddGame({ addGame }: { addGame: (g: IGame) => void }) {
   const { gameTypes } = useGameTypes();

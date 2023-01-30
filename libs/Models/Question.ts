@@ -23,6 +23,11 @@ export interface IQuestion {
   bets_amount?: number;
   possible_return?: number;
 
+  //
+  cashout_amount?: number;
+  refund_amount?: number;
+  //
+
   answers: {
     [id: number]: IAnswer;
   };

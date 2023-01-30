@@ -26,9 +26,9 @@ export default function RightMenu() {
         <UserLinkButton
           href="/deposit"
           text="Deposit"
-          className="bg-orange-600 text-gray-100"
+          className="bg-orange-600 text-gray-100 hidden-in-small-phone"
         />
-        <button className="mr-3 rounded-full p-1.5 bg-blue-600" onClick={open}>
+        <button className="mr-2 rounded-full bg-blue-600 p-1.5" onClick={open}>
           <FaUser fontSize={15} />
         </button>
       </div>
@@ -116,6 +116,12 @@ const Menus = ({ close }: { close: () => void }) => {
         close={close}
         href="/statements/multibet"
         text="Multibet Statement"
+        icon={<FaGamepad fontSize={18} />}
+      />
+      <SideLink
+        close={close}
+        href="/statements/all-virtual-game"
+        text="Virtual Statement"
         icon={<FaGamepad fontSize={18} />}
       />
       <SideLink

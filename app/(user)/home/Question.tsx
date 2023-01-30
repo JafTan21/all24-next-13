@@ -13,9 +13,11 @@ import Answer from "./Answer";
 export default function Question({
   initialQuestion,
   game,
+  is_single_game,
 }: {
   initialQuestion: IQuestion;
   game: IGame;
+  is_single_game: boolean | undefined;
 }) {
   const [question, questionSet] = useState(initialQuestion);
   useSocketReciever(`update-question-${question.id}`, (data) => {
@@ -33,16 +35,17 @@ export default function Question({
   return (
     <Collapsible
       className="m-1 "
+      isClosed={!is_single_game && game.status == Status.Upcoming}
       trigger={
         <div
           className={`text-sm px-2 py-1 text-gray-800 bg-gray-200 border-b border-gray-300 flex justify-between`}
         >
-          <b style={{ fontSize: 17 }}> {question.question}</b>
+          <b style={{ fontSize: 16 }}> {question.question}</b>
           <BsChevronDown />
         </div>
       }
     >
-      <div className="px-1 flex flex-wrap">
+      <div className="flex flex-wrap bg-white">
         {question.answers &&
           Object.entries(question.answers).map(([id, answer], idx) => {
             return (

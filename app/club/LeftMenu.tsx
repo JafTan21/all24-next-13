@@ -5,25 +5,17 @@ import React, { useState } from "react";
 import { HiMenu, HiHome } from "react-icons/hi";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { GiMoneyStack } from "react-icons/gi";
-import {
-  FaMoneyBillAlt,
-  FaRegListAlt,
-  FaUser,
-  FaUserCog,
-} from "react-icons/fa";
+import { FaRegListAlt, FaUser, FaUserCog } from "react-icons/fa";
 
-import { ImSpinner9 } from "react-icons/im";
 import { GrClose } from "react-icons/gr";
 
 import { motion as m, AnimatePresence } from "framer-motion";
 import { SideLink } from "../../components/user/MenuLink";
-import AuthButtons from "../../components/user/AuthButtons";
 import Image from "next/image";
 import Link from "next/link";
 
 import AppConfig from "../../app.config";
 import AppLogo from "../../assets/logo.png";
-import useUser from "../../hooks/api/useUser";
 import useClub from "../../hooks/api/useClub";
 import { BiLogOut } from "react-icons/bi";
 

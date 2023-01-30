@@ -1,14 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BiEdit, BiPlus } from "react-icons/bi";
-import { AdminInput, AdminSelect } from "../../../../../components/Html/Input";
-import SubmitButton from "../../../../../components/Html/SubmitButton";
-import useGameTypes from "../../../../../hooks/api/admin/useGameTypes";
-import useForm from "../../../../../hooks/useForm";
-import useModal, { Modal } from "../../../../../hooks/useModal";
-import { IGame } from "../../../../../libs/Models/Game";
-import { Status } from "../../../../../libs/Status";
-import FormatDate from "../../../../../utils/helpers/DateHelper";
+import {
+  AdminInput,
+  AdminSelect,
+} from "../../../../../../components/Html/Input";
+import SubmitButton from "../../../../../../components/Html/SubmitButton";
+import ToggleButton from "../../../../../../components/Html/ToggleButton";
+import useGameTypes from "../../../../../../hooks/api/admin/useGameTypes";
+import useForm from "../../../../../../hooks/useForm";
+import useModal, { Modal } from "../../../../../../hooks/useModal";
+import { IGame } from "../../../../../../libs/Models/Game";
+import { Status } from "../../../../../../libs/Status";
+import FormatDate from "../../../../../../utils/helpers/DateHelper";
 
 export default function EditGame({
   initialGameSet,
@@ -129,6 +133,27 @@ export default function EditGame({
             label="Live Score"
             onChange={onChange}
           />
+
+          <AdminInput
+            value={state.youtube_embed_link}
+            name="youtube_embed_link"
+            label="Youtube Embed Link"
+            onChange={onChange}
+          />
+          <ToggleButton
+            on="On"
+            off="Off"
+            isActive={!!state.youtube_embed_on}
+            onClick={(e) => {
+              updateState({
+                youtube_embed_on: !state.youtube_embed_on,
+              });
+            }}
+            withDiv={true}
+            classNames="p-2"
+            label="YouTube Embed:"
+          />
+
           <SubmitButton isSubmitting={isSubmitting} text="Update" />
         </form>
       </Modal>

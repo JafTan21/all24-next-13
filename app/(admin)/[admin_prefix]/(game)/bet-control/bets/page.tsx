@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import queryString from "query-string";
 import useSearch from "../../../../../../hooks/useSearch";
 import AdminPageWrapper from "../../../../../../components/Wrappers/AdminPageWrapper";

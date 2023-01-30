@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import React, { useContext } from "react";
+import React from "react";
 import ActionButtons from "../../../../../components/Html/ActionButtons";
 import { Submitting } from "../../../../../components/Html/Loading";
 import SelectedActions from "../../../../../components/Html/SelectedActions";
@@ -19,6 +19,7 @@ import {
   SelectableContext,
   useSelactableContext,
 } from "../../../../../utils/Contexts/SelectableContext";
+import { adminSuccessNotification } from "../../../../../utils/helpers/NotificationHelper";
 import TableHeader from "./Header";
 
 export default function Withdraws() {
@@ -70,6 +71,7 @@ const Maker = ({ row, refresh }: { row: IWithdraw; refresh: () => void }) => {
           .put("/admin/withdraw/" + row.id, state)
           .then((res) => {
             refresh();
+            adminSuccessNotification(res.data.message);
             resolve(res.data);
           })
           .catch(reject);

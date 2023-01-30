@@ -21,7 +21,7 @@ export const UserLinkButton = ({
   return (
     <Link
       href={href}
-      className={`flex p-1 mx-1 font-bold text-white rounded-lg text-md px-3 py-2 ${className}`}
+      className={`flex p-2 mx-1 font-bold text-white rounded-lg text-md ${className}`}
       style={style}
     >
       {icon}

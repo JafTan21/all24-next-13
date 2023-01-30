@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { IGameType } from "../../../libs/Models/Game";
 
 export default function useGameTypes() {
-  const { data, error } = useSWR("/admin/game-types", (url) => {
+  const { data, error, mutate } = useSWR("/admin/game-types", (url) => {
     return axios.get(url).then((res) => res.data.game_types);
   });
 
@@ -13,5 +13,6 @@ export default function useGameTypes() {
     gameTypes,
     error,
     isLoading: !gameTypes && !error,
+    refresh: mutate,
   };
 }

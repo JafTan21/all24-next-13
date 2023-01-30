@@ -4,7 +4,6 @@ import { AdminConfig, URLs } from "../../../app.config";
 import { getCookie, removeCookies } from "cookies-next";
 import { IAdmin } from "../../../libs/Models/Admin";
 import { getPrefix } from "../../../utils/admin/adminHelpers";
-import ErrorHandler from "../../../utils/helpers/ErrorHandler";
 
 export default function useAdmin() {
   const prefix = getPrefix();
@@ -23,18 +22,20 @@ export default function useAdmin() {
 
   const admin: IAdmin = data;
 
-  if (error && !admin) {
-    console.log(error);
-    ErrorHandler(error);
-  }
+  // if (error && !admin) {
+  //   console.log(error);
+  //   ErrorHandler(error);
+  // }
 
   return {
     admin,
     error,
     isLoading: !admin && !error,
     logout: () => {
+      if (!window.confirm("Are you sure?")) return;
       removeCookies(AdminConfig.admin_token);
-      mutate("/admin/get-admin", undefined);
+      mutate(undefined);
+      window.location.href = "/";
     },
   };
 }

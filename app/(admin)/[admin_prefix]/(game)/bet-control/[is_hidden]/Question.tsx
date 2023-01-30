@@ -1,21 +1,26 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import Collapsible from "../../../../../components/Html/Collapsible";
-import SubmitButton from "../../../../../components/Html/SubmitButton";
-import Td from "../../../../../components/Html/Td";
-import ToggleButton from "../../../../../components/Html/ToggleButton";
-import StopPropagation from "../../../../../components/Wrappers/StopPropagation";
-import useForm, { verifyCSRF } from "../../../../../hooks/useForm";
-import { IGame } from "../../../../../libs/Models/Game";
-import { IQuestion } from "../../../../../libs/Models/Question";
-import { Status } from "../../../../../libs/Status";
-import ErrorHandler from "../../../../../utils/helpers/ErrorHandler";
-import { useSocketUpdater } from "../../../../../utils/helpers/SocketHelper";
+import Collapsible from "../../../../../../components/Html/Collapsible";
+import SubmitButton from "../../../../../../components/Html/SubmitButton";
+import ToggleButton from "../../../../../../components/Html/ToggleButton";
+import StopPropagation from "../../../../../../components/Wrappers/StopPropagation";
+import useForm, { verifyCSRF } from "../../../../../../hooks/useForm";
+import { IGame } from "../../../../../../libs/Models/Game";
+import { IQuestion } from "../../../../../../libs/Models/Question";
+import { Status } from "../../../../../../libs/Status";
+import ErrorHandler from "../../../../../../utils/helpers/ErrorHandler";
+import { useSocketUpdater } from "../../../../../../utils/helpers/SocketHelper";
+import { useBetDetailsUpdater } from "../useBetDetailsUpdater";
+
 import AddAnswer from "./AddAnswer";
 import Answer from "./Answer";
 import EditQuestion from "./EditQuestion";
-import { NotSet } from "./Game";
+import { NotSet, Separator, BoldOrNormalNumber } from "./Game";
+
+const Key = (text: string) => {
+  return <span className="text-gray-500">{text}</span>;
+};
 
 export default function Question({
   initialQuestion,
@@ -37,6 +42,10 @@ export default function Question({
       "status",
     ],
     "update-question"
+  );
+  useBetDetailsUpdater<IQuestion>(
+    `update-question-${question.id}-bet-details`,
+    questionSet
   );
 
   const thClasses = "text-gray-600 font-normal px-2 border border-slate-200";
@@ -66,10 +75,17 @@ export default function Question({
         isClosed={question.is_area_hidden}
         trigger={
           <div className="p-2 text-gray-800">
-            <strong>{question.question}</strong>|
-            <span className="ml-1">
-              end: {question.ending_time || <NotSet />}
-            </span>
+            <strong>{question.question}</strong>
+            <Separator />
+            {question.ending_time && (
+              <>
+                <span className="ml-1">
+                  {Key("end: ")}
+                  {question.ending_time || <NotSet />}
+                </span>
+              </>
+            )}
+
             <StopPropagation className="inline text-white">
               <AddAnswer
                 initialQuestion={question}
@@ -90,6 +106,9 @@ export default function Question({
               <ToggleButton
                 on="Show"
                 off="Off"
+                activeClass="bg-green-500 text-white"
+                inactiveClass="bg-red-500 text-white"
+                width={50}
                 isActive={question.show_to_users}
                 onClick={(e) =>
                   update({ show_to_users: !question.show_to_users })
@@ -98,6 +117,9 @@ export default function Question({
               <ToggleButton
                 on="Bet"
                 off="No bet"
+                activeClass="bg-green-500 text-white"
+                inactiveClass="bg-red-500 text-white"
+                width={60}
                 isActive={question.can_bet}
                 onClick={(e) => update({ can_bet: !question.can_bet })}
               />
@@ -115,6 +137,7 @@ export default function Question({
               <ToggleButton
                 on="Are-Show"
                 off="Area-Hide"
+                inactiveClass="bg-red-500 text-white"
                 isActive={!question.is_area_hidden}
                 onClick={(e) =>
                   update({ is_area_hidden: !question.is_area_hidden })
@@ -122,12 +145,19 @@ export default function Question({
               />
             </StopPropagation>
             <span className="ml-1">
-              (Bets: {question.bets_count}, {question.bets_amount} bdt)
+              ({Key("Bets: ")}
+              <BoldOrNormalNumber num={question.bets_count || 0} after="," />
+              <BoldOrNormalNumber num={question.bets_amount || 0} before=" " />
+              $)
             </span>
             <span className="ml-1">
-              (Multibets: {question.multibets_count})
+              ({Key("Multi: ")}
+              <b className="text-red-500">{question.multibets_count || 0}</b>)
             </span>
-            <span className="ml-1">(Limit: {question.total_limit})</span>
+            <span className="ml-1">
+              ({Key("Limit: ")}
+              <BoldOrNormalNumber num={question.total_limit || 0} />)
+            </span>
           </div>
         }
       >
@@ -138,16 +168,15 @@ export default function Question({
               <tr>
                 <th className={thClasses}>Answer</th>
                 <th className={thClasses}>Rate</th>
-                <th className={thClasses}>Cashout Rate</th>
+                <th className={thClasses}>C-Rate</th>
                 <th className={thClasses}>Bets</th>
-                <th className={thClasses}>Multibets</th>
+                <th className={thClasses}>Multi</th>
                 <th className={thClasses}>Possible Return</th>
-                <th className={thClasses}>Cashout</th>
+                <th className={thClasses}>C-Out</th>
                 <th className={thClasses}>Refund</th>
                 <th className={`${thClasses}`} style={{ width: 200 }}>
                   Actions
                 </th>
-                <th className={`${thClasses} w-[150px]`}>Results</th>
               </tr>
             </thead>
             <tbody>

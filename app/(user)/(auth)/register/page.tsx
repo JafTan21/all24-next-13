@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import { mutate } from "swr";
 import AppConfig from "../../../../app.config";
 import Input from "../../../../components/Html/Input";
@@ -16,10 +16,9 @@ import { setCookie } from "cookies-next";
 import moment from "moment";
 import { successNotification } from "../../../../utils/helpers/NotificationHelper";
 import useClubs from "../../../../hooks/api/useClubs";
-moment().format();
 
 export default function Register() {
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
 
   const { state, onChange, onSubmit, isSubmitting } = useForm({
     initialState: {

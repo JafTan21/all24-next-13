@@ -24,6 +24,7 @@ import { ImSpinner9 } from "react-icons/im";
 import { usePathname } from "next/navigation";
 import Collapsible from "../../components/Html/Collapsible";
 import { getPrefix } from "../../utils/admin/adminHelpers";
+import useAdmin from "../../hooks/api/admin/useAdmin";
 
 export default function LeftMenu() {
   const [opened, openedSet] = useState(false);
@@ -91,6 +92,7 @@ const Topbar = ({ close }: { close: () => void }) => {
 
 const Menus = ({ close }: { close: () => void }) => {
   const prefix = "/" + getPrefix();
+  const { logout } = useAdmin();
 
   return (
     <div>
@@ -100,14 +102,18 @@ const Menus = ({ close }: { close: () => void }) => {
         role="menu"
         data-accordion="false"
       >
+        {(prefix == AdminConfig.SuperAdminPrefix ||
+          prefix == AdminConfig.GameAdminPrefix) && (
+          <SidebarLink
+            href="dashboard"
+            text="Dashboard"
+            icon={<AiFillDashboard />}
+            close={close}
+          />
+        )}
+
         {prefix == AdminConfig.SuperAdminPrefix && (
           <>
-            <SidebarLink
-              href="dashboard"
-              text="Dashboard"
-              icon={<AiFillDashboard />}
-              close={close}
-            />
             <SidebarLink
               href="admin-profits"
               text="Admin Profits"
@@ -126,6 +132,12 @@ const Menus = ({ close }: { close: () => void }) => {
               icon={<AiFillNotification />}
               close={close}
             />
+            <SidebarLink
+              href="sms"
+              text="SMS"
+              icon={<AiFillNotification />}
+              close={close}
+            />
           </>
         )}
 
@@ -141,18 +153,6 @@ const Menus = ({ close }: { close: () => void }) => {
                 </div>
               }
             >
-              <SidebarLink
-                href="to-reseller-balance-transfers"
-                text="User to Reseller Transfers"
-                icon={<AiFillBank />}
-                close={close}
-              />
-              <SidebarLink
-                href="to-reseller-balance-transfers/history"
-                text="Transfers History"
-                icon={<AiFillBank />}
-                close={close}
-              />
               <SidebarLink
                 href="deposits"
                 text="User Deposits"
@@ -189,6 +189,29 @@ const Menus = ({ close }: { close: () => void }) => {
                 icon={<AiFillBank />}
                 close={close}
               />
+            </Collapsible>
+
+            <Collapsible
+              isClosed={true}
+              time={100}
+              trigger={
+                <div className="mx-3 mt-1 p-2 bg-blue-600 text-white rounded">
+                  Balance Transfers
+                </div>
+              }
+            >
+              <SidebarLink
+                href="to-reseller-balance-transfers"
+                text="User to Reseller Transfers"
+                icon={<AiFillBank />}
+                close={close}
+              />
+              <SidebarLink
+                href="to-reseller-balance-transfers/history"
+                text="Transfers History"
+                icon={<AiFillBank />}
+                close={close}
+              />
               <SidebarLink
                 href="/user-to-user-balance-transfer/history"
                 text="Balance Transfer History"
@@ -219,13 +242,19 @@ const Menus = ({ close }: { close: () => void }) => {
               }
             >
               <SidebarLink
-                href="bet-control"
+                href="game-types"
+                text="Game Types"
+                icon={<FaGamepad />}
+                close={close}
+              />
+              <SidebarLink
+                href="bet-control/normal"
                 text="Bet Control"
                 icon={<FaGamepad />}
                 close={close}
               />
               <SidebarLink
-                href="bet-control?hidden=true"
+                href="bet-control/hidden"
                 text="Hidden Bet Control"
                 icon={<FaGamepad />}
                 close={close}
@@ -243,18 +272,6 @@ const Menus = ({ close }: { close: () => void }) => {
                 close={close}
               />
               <SidebarLink
-                href="history/bet"
-                text="Bet History"
-                icon={<BiHistory />}
-                close={close}
-              />
-              <SidebarLink
-                href="history/multibet"
-                text="Multibet History"
-                icon={<BiHistory />}
-                close={close}
-              />
-              <SidebarLink
                 href="history/closed-games"
                 text="Closed Games"
                 icon={<BiHistory />}
@@ -269,6 +286,29 @@ const Menus = ({ close }: { close: () => void }) => {
               <SidebarLink
                 href="history/closed-answers"
                 text="Closed Answers"
+                icon={<BiHistory />}
+                close={close}
+              />
+            </Collapsible>
+
+            <Collapsible
+              isClosed={true}
+              time={100}
+              trigger={
+                <div className="mx-3 mt-1 p-2 bg-blue-600 text-white rounded">
+                  All Bet history
+                </div>
+              }
+            >
+              <SidebarLink
+                href="history/bet"
+                text="Bet History"
+                icon={<BiHistory />}
+                close={close}
+              />
+              <SidebarLink
+                href="history/multibet"
+                text="Multibet History"
                 icon={<BiHistory />}
                 close={close}
               />
@@ -333,9 +373,14 @@ const Menus = ({ close }: { close: () => void }) => {
           </>
         )}
 
-        {/* <button className="mb-5 btn btn-danger" onClick={Logout}>
+        <button
+          className="text-[17px] my-3 bg-red-500 w-1/2 p-2 rounded mt-5 mx-2 transition-all"
+          onClick={logout}
+        >
           logout
-        </button> */}
+        </button>
+
+        <div style={{ marginBottom: "200px" }}></div>
       </ul>
     </div>
   );

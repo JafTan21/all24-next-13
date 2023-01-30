@@ -40,19 +40,21 @@ export default function AddPayment({ refresh }: IRefresh) {
   return (
     <form onSubmit={onSubmit} className="p-2 m-2 bg-white">
       <h2>Add New</h2>
-      <AdminInput
-        name="name"
-        value={state.name}
-        onChange={onChange}
-        label="name"
-      />
-      <AdminInput
-        name="number"
-        value={state.number}
-        onChange={onChange}
-        type="text"
-        label="number"
-      />
+      <div className="flex justify-center">
+        <AdminInput
+          name="name"
+          value={state.name}
+          onChange={onChange}
+          label="name"
+        />
+        <AdminInput
+          name="number"
+          value={state.number}
+          onChange={onChange}
+          type="text"
+          label="number"
+        />
+      </div>
       <div className="flex">
         {images?.map((image, idx: number) => {
           return (
@@ -61,7 +63,7 @@ export default function AddPayment({ refresh }: IRefresh) {
               className="flex flex-col items-center justify-center"
             >
               <label htmlFor={image.name + idx}>
-                <img src={image.src} alt={image.name} style={{ height: 40 }} />
+                <img src={image.src} alt={image.name} style={{ height: 30 }} />
               </label>
               <input
                 required

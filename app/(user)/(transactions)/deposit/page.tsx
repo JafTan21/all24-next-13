@@ -20,7 +20,7 @@ interface IDepositRequest {
 }
 
 export default function Deposit() {
-  const { user, isLoading } = useUser();
+  const { isLoading } = useUser();
   const { transactionMethods } = useTransactionMethods();
 
   const { state, onChange, updateState, onSubmit, isSubmitting } =

@@ -15,6 +15,7 @@ import { Status } from "../../../../../libs/Status";
 import FormatDate, {
   DateFormatShow,
 } from "../../../../../utils/helpers/DateHelper";
+import { adminSuccessNotification } from "../../../../../utils/helpers/NotificationHelper";
 import TableHeader from "./Header";
 
 export default function Deposits() {
@@ -56,6 +57,7 @@ const Maker = ({
           .put("/admin/UserToResellerBalanceTransfer/" + row.id, state)
           .then((res) => {
             refresh();
+            adminSuccessNotification(res.data.message);
             resolve(res.data);
           })
           .catch(reject);

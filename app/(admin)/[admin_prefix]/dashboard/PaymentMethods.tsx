@@ -9,6 +9,7 @@ import useSearch from "../../../../hooks/useSearch";
 import { IRefresh } from "../../../../libs/interfaces";
 import { IPaymentMethod } from "../../../../libs/Models/PaymentMethod";
 import AddPayment from "./AddPayment";
+import EditPayment from "./EditPayment";
 
 export default function PaymentMethods() {
   const { data, refresh } = useSearch<{ methods: IPaymentMethod[] }>({
@@ -67,12 +68,15 @@ const Maker = ({ row, refresh }: { row: IPaymentMethod } & IRefresh) => {
         <img src={row.image} alt="" style={{ height: 50 }} />
       </Td>
       <Td>
-        <SubmitButton
-          isSubmitting={isSubmitting}
-          classNames="ml-2 bg-red-600 text-white p-2 rounded"
-          text={<AiFillDelete />}
-          onClick={submitWithoutForm}
-        />
+        <div className="flex">
+          <EditPayment method={row} refresh={refresh} />
+          <SubmitButton
+            isSubmitting={isSubmitting}
+            classNames="ml-2 bg-red-600 text-white p-2 rounded"
+            text={<AiFillDelete />}
+            onClick={submitWithoutForm}
+          />
+        </div>
       </Td>
       <Td>{row.action}</Td>
       <Td>{row.action_by_email}</Td>

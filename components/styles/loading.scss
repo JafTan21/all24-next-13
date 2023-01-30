@@ -1,0 +1,28 @@
+.logo-loading-animation {
+  animation: pulse-animation 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    scale: 0.3;
+  }
+  50% {
+    scale: 0.7;
+  }
+  100% {
+    scale: 0.3;
+  }
+}
+
+.loading-spinning-circle {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

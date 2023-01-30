@@ -1,6 +1,6 @@
 import axios from "axios";
-import useSWR, { mutate } from "swr";
-import AppConfig, { ClubConfig, URLs } from "../../app.config";
+import useSWR from "swr";
+import { ClubConfig, URLs } from "../../app.config";
 import { getCookie, removeCookies, setCookie } from "cookies-next";
 import { IClub } from "../../libs/Models/Club";
 import { adminSuccessNotification } from "../../utils/helpers/NotificationHelper";

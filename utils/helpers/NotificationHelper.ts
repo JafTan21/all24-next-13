@@ -11,11 +11,12 @@ const config: any = {
   progress: undefined,
 };
 
-export const successNotification = (msg: string) => toast.success(msg, config);
+export const successNotification = (msg: string = "Successful") =>
+  toast.success(msg, config);
 export const errorNotification = (msg: string) => toast.error(msg, config);
 export const warnNotification = (msg: string) => toast.warn(msg, config);
 
-export const adminSuccessNotification = (msg: string) =>
+export const adminSuccessNotification = (msg: string = "Successful") =>
   toast.success(msg, {
     ...config,
     autoClose: 300,

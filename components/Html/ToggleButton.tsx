@@ -9,6 +9,11 @@ interface Props {
   className?: string;
   label?: string;
   withDiv?: boolean;
+  width?: number;
+  height?: number;
+
+  inactiveClass?: string;
+  activeClass?: string;
 }
 
 export default function ToggleButton({
@@ -16,43 +21,32 @@ export default function ToggleButton({
   onClick,
   on,
   off,
+
   classNames,
   className,
+  inactiveClass,
+  activeClass,
+
   label,
   withDiv,
+  width,
+  height,
 }: Props) {
-  if (withDiv) {
-    return (
-      <div className={className}>
-        {label && <p className="text-gray-900 ml-2">{label}</p>}
-        <button
-          className={`${
-            isActive ? "bg-blue-500 text-white" : "bg-white text-gray-700"
-          }  px-1 my-[2px] admin-game-btn shadow-lg ${classNames}`}
-          onClick={onClick}
-          style={{
-            transition: "all",
-            transitionDuration: "0.1s",
-          }}
-          type="button"
-        >
-          {isActive ? on : off}
-        </button>
-      </div>
-    );
-  }
-
-  return (
+  const content = (
     <>
       {label && <p className="text-gray-900 ml-2">{label}</p>}
       <button
         className={`${
-          isActive ? "bg-blue-500 text-white" : "bg-white text-gray-700"
+          isActive
+            ? activeClass || `bg-blue-500 text-white`
+            : inactiveClass || " bg-white text-gray-700 "
         }  px-1 my-[2px] admin-game-btn shadow-lg ${classNames}`}
         onClick={onClick}
         style={{
           transition: "all",
           transitionDuration: "0.1s",
+          width: width || "auto",
+          height: height || "auto",
         }}
         type="button"
       >
@@ -60,4 +54,10 @@ export default function ToggleButton({
       </button>
     </>
   );
+
+  if (withDiv) {
+    return <div className={className}>{content}</div>;
+  }
+
+  return content;
 }

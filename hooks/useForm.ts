@@ -1,18 +1,17 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { URLs } from "../app.config";
 import ErrorHandler from "../utils/helpers/ErrorHandler";
 
 export const verifyCSRF = (callback: () => void) => {
-  axios
-    .get("https://backend.gameingserver.xyz/public/sanctum/csrf-cookie")
-    .then((response) => {
-      try {
-        callback();
-      } catch (e) {
-        console.error(e);
-      }
-    });
+  axios.get(URLs.backend_csrf).then((response) => {
+    try {
+      callback();
+    } catch (e) {
+      console.error(e);
+    }
+  });
 };
 
 export default function useForm<T>({

@@ -4,17 +4,24 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ErrorHandler from "../utils/helpers/ErrorHandler";
 import usePagination from "./usePagination";
+import queryString from "query-string";
 
 interface ISearchProps {
   url: string;
   params?: { [key: string | number]: string | boolean | number | undefined };
   noPagination?: boolean;
+
+  isUserManagePage?: boolean;
+  isClubManagePage?: boolean;
 }
 
 export default function useSearch<T = any[]>({
   url,
   params,
   noPagination,
+
+  isUserManagePage,
+  isClubManagePage,
 }: ISearchProps) {
   const [search, searchSet] = useState({
     value: "",
@@ -26,6 +33,20 @@ export default function useSearch<T = any[]>({
   const [totalPageCount, totalPageCountSet] = useState(1);
   const { paginator, currentPage } = usePagination(totalPageCount);
 
+  const getSearchValue = () => {
+    if (isUserManagePage) {
+      const { username } = queryString.parse(location.search);
+      if (username && typeof username == "string") return username;
+    }
+
+    if (isClubManagePage) {
+      const { club_name } = queryString.parse(location.search);
+      if (club_name && typeof club_name == "string") return club_name;
+    }
+
+    return search.value;
+  };
+
   const fetchData = ({ value, date }: typeof search) => {
     if (!location) {
       console.error("No Window found on useSearch:fetchData()");
@@ -35,10 +56,10 @@ export default function useSearch<T = any[]>({
     axios
       .get(url, {
         params: {
-          search_value: value,
+          ...params,
+          search_value: getSearchValue(),
           search_date: date,
           page: currentPage,
-          ...params,
         },
       })
       .then((res) => {
@@ -51,18 +72,18 @@ export default function useSearch<T = any[]>({
 
   const fetchDataWithParams = (newParams: typeof params) => {
     if (!window) {
-      console.error("No Window found on useSearch:fetchData()");
+      console.error("No Window found on useSearch:fetchDataWithParams()");
       return;
     }
 
     axios
       .get(url, {
         params: {
-          search_value: search.value,
-          search_date: search.date,
-          page: currentPage,
           ...params,
           ...newParams,
+          search_value: getSearchValue(),
+          search_date: search.date,
+          page: currentPage,
         },
       })
       .then((res) => {
@@ -117,7 +138,7 @@ export default function useSearch<T = any[]>({
         fetchData(search);
       }, 700)
     );
-  }, [search, currentPage]);
+  }, [search.value, search.date, currentPage]);
 
   return {
     SearchBar,

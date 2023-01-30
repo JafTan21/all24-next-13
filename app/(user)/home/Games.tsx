@@ -99,7 +99,7 @@ export default function Games({
         }}
       >
         <div className="flex flex-row justify-center  flex-wrap mt-2">
-          <GameGroup name="Live" icon={LiveIcon} initialGames={live} />
+          <GameGroup name="Live Games" icon={LiveIcon} initialGames={live} />
           {showingAll && <GameGroup name="Upcoming" initialGames={upcoming} />}
         </div>
 

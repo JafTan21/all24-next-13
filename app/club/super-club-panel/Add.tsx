@@ -16,13 +16,15 @@ export default function Add({ refresh }: { refresh: () => void }) {
 
   const props = useModal({ title: "Add Club" });
   const { state, onChange, onSubmit, isSubmitting, updateState } = useForm<
-    Partial<IClub> & { owner_password: string }
+    Partial<IClub> & {
+      owner_password: string;
+    }
   >({
     initialState: {
       name: "",
       balance: 0,
       is_active: true,
-      commission_rate: undefined,
+      commission_rate: 2,
       owner_email: "",
       owner_phone: "",
       owner_password: "",
@@ -64,14 +66,14 @@ export default function Add({ refresh }: { refresh: () => void }) {
             onChange={onChange}
             required={true}
           />
-          {/* <AdminInput
+          <AdminInput
             value={state.commission_rate}
             name="commission_rate"
             label="Commission Rate"
             onChange={onChange}
             required={true}
             readonly={true}
-          /> */}
+          />
           <AdminInput
             value={state.owner_email}
             name="owner_email"
@@ -122,7 +124,7 @@ export default function Add({ refresh }: { refresh: () => void }) {
             label="Is Active:"
           />
 
-          <SubmitButton isSubmitting={isSubmitting} text="Update" />
+          <SubmitButton isSubmitting={isSubmitting} text="Submit" />
         </form>
       </Modal>
     </>

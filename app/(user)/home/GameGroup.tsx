@@ -14,7 +14,7 @@ export default function GameGroup({
   name: string;
 }) {
   return (
-    <div className="px-1 md:w-1/2 w-full bg-white">
+    <div className="px-1 my-0.5 md:w-1/2 w-full bg-white">
       <Collapsible
         time={100}
         text={name}

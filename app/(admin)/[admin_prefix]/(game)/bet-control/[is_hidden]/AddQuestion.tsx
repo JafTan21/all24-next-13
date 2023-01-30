@@ -1,13 +1,16 @@
 import axios from "axios";
 import React from "react";
 import { BiPlus } from "react-icons/bi";
-import { AdminInput, AdminSelect } from "../../../../../components/Html/Input";
-import SubmitButton from "../../../../../components/Html/SubmitButton";
-import useDefaultQUestions from "../../../../../hooks/api/admin/useDefaultQuestions";
-import useForm from "../../../../../hooks/useForm";
-import useModal, { Modal } from "../../../../../hooks/useModal";
-import { IGame } from "../../../../../libs/Models/Game";
-import { IQuestion } from "../../../../../libs/Models/Question";
+import {
+  AdminInput,
+  AdminSelect,
+} from "../../../../../../components/Html/Input";
+import SubmitButton from "../../../../../../components/Html/SubmitButton";
+import useDefaultQUestions from "../../../../../../hooks/api/admin/useDefaultQuestions";
+import useForm from "../../../../../../hooks/useForm";
+import useModal, { Modal } from "../../../../../../hooks/useModal";
+import { IGame } from "../../../../../../libs/Models/Game";
+import { IQuestion } from "../../../../../../libs/Models/Question";
 
 export default function AddQuestion({
   addQuestion,
@@ -23,6 +26,7 @@ export default function AddQuestion({
     initialState: {
       game_id: initialGame.id,
       question: "",
+      ending_time: "",
     },
     resetOnResolve: true,
     submit: (state) => {
@@ -32,7 +36,6 @@ export default function AddQuestion({
           .then((res) => {
             addQuestion(res.data.question);
             resolve(res.data);
-            props.closeModal();
           })
           .catch(reject);
       });
@@ -77,6 +80,7 @@ export default function AddQuestion({
             label="Question"
             onChange={onChange}
             required={true}
+            autoFocus={true}
           />
           <AdminInput
             value={state.ending_time}

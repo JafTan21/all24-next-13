@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
-import { AdminInput } from "../../../../../components/Html/Input";
-import SubmitButton from "../../../../../components/Html/SubmitButton";
-import useForm from "../../../../../hooks/useForm";
-import useModal, { Modal } from "../../../../../hooks/useModal";
-import { IQuestion } from "../../../../../libs/Models/Question";
-import FormatDate from "../../../../../utils/helpers/DateHelper";
+import { AdminInput } from "../../../../../../components/Html/Input";
+import SubmitButton from "../../../../../../components/Html/SubmitButton";
+import useForm from "../../../../../../hooks/useForm";
+import useModal, { Modal } from "../../../../../../hooks/useModal";
+import { IQuestion } from "../../../../../../libs/Models/Question";
+import FormatDate from "../../../../../../utils/helpers/DateHelper";
 
 export default function EditQuestion({
   initialQuestionSet,

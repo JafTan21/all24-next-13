@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AdminTable } from "../../../../../components/Html/Table";
 import Td from "../../../../../components/Html/Td";
 import AdminPageWrapper from "../../../../../components/Wrappers/AdminPageWrapper";
@@ -9,14 +9,12 @@ import useSearch from "../../../../../hooks/useSearch";
 import { IClub } from "../../../../../libs/Models/Club";
 import Add from "./Add";
 import Edit from "./Edit";
+import queryString from "query-string";
 
 export default function Manage(props: any) {
   const { data, paginator, SearchBar, refresh } = useSearch<IClub[]>({
     url: "/admin/club",
-    params: {
-      search_value: props.searchParams.club_name,
-      club_name_only: !!props.searchParams.club_name,
-    },
+    isClubManagePage: true,
   });
 
   return (
@@ -79,6 +77,7 @@ const Maker = ({ initialRow }: { initialRow: IClub }) => {
           <>
             <p>Super Club</p>
             <p>Limit: {row.club_opening_limit}</p>
+            <p>commission: {row.super_commission_rate}</p>
           </>
         ) : (
           "Normal Club"

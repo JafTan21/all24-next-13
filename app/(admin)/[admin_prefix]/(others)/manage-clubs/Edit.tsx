@@ -129,13 +129,23 @@ export default function Edit({
             />
           </div>
           {state.is_super && (
-            <AdminInput
-              value={state.club_opening_limit}
-              name="club_opening_limit"
-              label="Club Opening Limit"
-              onChange={onChange}
-              required={true}
-            />
+            <>
+              <AdminInput
+                value={state.club_opening_limit}
+                name="club_opening_limit"
+                label="Club Opening Limit"
+                onChange={onChange}
+                required={true}
+              />
+              <AdminInput
+                value={state.super_commission_rate}
+                name="super_commission_rate"
+                label="Super Commission"
+                onChange={onChange}
+                required={true}
+                type="number"
+              />
+            </>
           )}
 
           <SubmitButton isSubmitting={isSubmitting} />

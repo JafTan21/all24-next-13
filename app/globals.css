@@ -16,9 +16,10 @@ body {
   background: #e5e8ed;
 }
 
-/* ::-webkit-scrollbar {
+/* tod o */
+::-webkit-scrollbar {
   display: none;
-} */
+}
 
 @keyframes animate-loading {
   0% {
@@ -38,6 +39,20 @@ body {
   animation-iteration-count: infinite;
 }
 
+.rate-increased-bg {
+  background: #abed91;
+}
+
 .rate-bg {
   background-color: #52a921;
+}
+
+.hidden-in-small-phone {
+  display: none;
+}
+
+@media screen and (min-width: 360px) {
+  .hidden-in-small-phone {
+    display: block;
+  }
 }

@@ -9,4 +9,6 @@ export interface ISetting {
 
   feature_on: boolean;
   interval: number;
+
+  winning_percentage?: number;
 }

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { IAnswer } from "../../../libs/Models/Answer";
-import { AiOutlineLeft } from "react-icons/ai";
 import { IQuestion } from "../../../libs/Models/Question";
 import { IGame } from "../../../libs/Models/Game";
 import SubmitButton from "../../../components/Html/SubmitButton";
@@ -15,6 +14,9 @@ import { TailSpin } from "react-loader-spinner";
 import { IMultibet, MultibetContext } from "./Multibet";
 import ErrorHandler from "../../../utils/helpers/ErrorHandler";
 import AppConfig from "../../../app.config";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { useWebSocket } from "../../WebSocket";
+import { IBetUpdateData } from "../../IBetUpdateData";
 
 interface Props {
   show: boolean;
@@ -43,6 +45,7 @@ export default function BetModal({
   };
 
   const [isSelecting, isSelectingSet] = useState(false);
+  const { socket } = useWebSocket();
 
   const { state, onChange, onSubmit, updateState, isSubmitting } = useForm({
     initialState: {
@@ -60,6 +63,22 @@ export default function BetModal({
             amount: state.amount,
           })
           .then((res) => {
+            const data: IBetUpdateData = {
+              answer_id: answer.id,
+              question_id: question.id,
+              game_id: game.id,
+
+              bet_add_amount: state.amount,
+              bet_add_count: 1,
+
+              bet_add_possible_return: state.amount * answer.rate,
+              bet_add_cashout_amount: 0,
+              bet_add_refund_amount: 0,
+
+              multibet_add_count: 0,
+            };
+            socket?.emit("update-bet-details", { data });
+
             successNotification(res.data.message);
             showSet(false);
             resolve(res);
@@ -104,7 +123,7 @@ export default function BetModal({
           transition={{ duration: 0.3 }}
           style={{ zIndex: 100 }}
           onClick={() => showSet(false)}
-          className="absolute top-0 left-0 right-0 w-screen h-screen"
+          className="fixed top-0 left-0 right-0 w-screen h-screen"
         >
           <BackBox
             title="Place Bet"
@@ -153,21 +172,40 @@ export default function BetModal({
                       </div>
                     </div>
 
-                    <input
-                      type="number"
-                      placeholder="Bet amount"
-                      className="bg-white px-4 py-1 text-gray-900  border border-gray-900 rounded outline-none w-full focus:ring-2 focus:ring-indigo-400"
-                      value={state.amount || ""}
-                      name="amount"
-                      onChange={onChange}
-                      required={true}
-                    />
+                    <div className="flex mt-0.5">
+                      <button
+                        type="button"
+                        className="bg-gray-200 py-2 px-2 rounded-l border-gray-400 border-b border-t border-l"
+                        disabled={state.amount <= 20}
+                        onClick={() => {
+                          if (state.amount < 20) return;
+                          updateState({ amount: state.amount - 20 });
+                        }}
+                      >
+                        <AiOutlineMinus />
+                      </button>
+                      <input
+                        type="number"
+                        placeholder="Bet amount"
+                        className="border-gray-400 border-b border-t bg-white px-4 py-1 text-gray-900 outline-none w-full focus:ring-2 focus:ring-indigo-400"
+                        value={state.amount || ""}
+                        name="amount"
+                        onChange={onChange}
+                        required={true}
+                      />
+                      <button
+                        type="button"
+                        className="bg-gray-200 py-2 px-2 rounded-r border-gray-400 border-b border-t border-r"
+                        onClick={() =>
+                          updateState({ amount: state.amount + 20 })
+                        }
+                      >
+                        <AiOutlinePlus />
+                      </button>
+                    </div>
 
-                    <div className="flex flex-wrap items-center justify-center">
-                      {[
-                        20, 100, 200, 500, 1000, 1500, 2000, 3000, 5000, 7000,
-                        10000,
-                      ].map((num) => {
+                    <div className="flex items-center justify-center">
+                      {[1000, 2000, 3000, 5000, 10000].map((num) => {
                         return (
                           <button
                             onClick={() => updateState({ amount: num })}
@@ -200,8 +238,11 @@ export default function BetModal({
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col">
-                    <SubmitButton isSubmitting={isSubmitting} />
+                  <div className="flex-center-center">
+                    <SubmitButton
+                      isSubmitting={isSubmitting}
+                      classNames="flex justify-center items-center h-8 w-2/3 font-bold transition duration-300 bg-green-600 rounded text-indigo-50 hover:bg-green-500"
+                    />
                     <button
                       onClick={SelectForMultibet}
                       type="button"
@@ -211,7 +252,7 @@ export default function BetModal({
                           (bet) => bet.answer.id == answer.id
                         )
                       }
-                      className="flex items-center justify-center px-2 py-1 mt-2 text-gray-800 bg-yellow-300 rounded"
+                      className="flex items-center justify-center h-8 w-1/3  text-gray-800 bg-yellow-300 rounded"
                     >
                       {isSelecting ? (
                         <TailSpin height="20" color="red" ariaLabel="loading" />
@@ -221,7 +262,7 @@ export default function BetModal({
                         ) ? (
                         "selected"
                       ) : (
-                        "select for multibet"
+                        "multibet"
                       )}
                     </button>
                   </div>

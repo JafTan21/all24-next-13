@@ -11,7 +11,9 @@ export default async function Home() {
 
   return (
     <>
+      {/* <Loading /> */}
       <Notice notice={notice} />
+
       <Games initalGames={games} />
     </>
   );

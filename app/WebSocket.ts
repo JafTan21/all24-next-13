@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import io, { Socket } from "socket.io-client";
+import { URLs } from "../app.config";
 
 export const WebSocketContext = createContext<{
   socket: Socket | null;
@@ -17,7 +18,7 @@ export const getFirstSocketForLayout = () => {
 
   useEffect(() => {
     try {
-      socketSet(io("https://server.gameingserver.xyz"));
+      socketSet(io(URLs.socket));
     } catch (err) {
       console.log(err);
     }

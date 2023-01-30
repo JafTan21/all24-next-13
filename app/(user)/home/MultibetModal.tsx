@@ -1,8 +1,4 @@
 import React, { useContext, useState } from "react";
-import { IAnswer } from "../../../libs/Models/Answer";
-import { AiOutlineLeft } from "react-icons/ai";
-import { IQuestion } from "../../../libs/Models/Question";
-import { IGame } from "../../../libs/Models/Game";
 import SubmitButton from "../../../components/Html/SubmitButton";
 import BackBox from "../../../components/Html/BackBox";
 
@@ -11,10 +7,9 @@ import useForm from "../../../hooks/useForm";
 import axios from "axios";
 import Image from "next/image";
 import { successNotification } from "../../../utils/helpers/NotificationHelper";
-import { TailSpin } from "react-loader-spinner";
-import { IMultibet, MultibetContext } from "./Multibet";
-import ErrorHandler from "../../../utils/helpers/ErrorHandler";
 import AppConfig from "../../../app.config";
+import { MultibetContext } from "./Multibet";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 interface Props {
   show: boolean;
@@ -83,7 +78,7 @@ export default function MultibetModal({ show, showSet }: Props) {
           transition={{ duration: 0.3 }}
           style={{ zIndex: 100 }}
           onClick={() => showSet(false)}
-          className="absolute top-0 left-0 right-0 w-screen h-screen"
+          className="fixed top-0 left-0 right-0 w-screen h-screen"
         >
           <BackBox
             title="Place Multi-Bet"
@@ -156,21 +151,38 @@ export default function MultibetModal({ show, showSet }: Props) {
                     )}
                   </div>
 
-                  <input
-                    type="number"
-                    placeholder="Bet amount"
-                    className="bg-white px-4 py-1 text-gray-900  border border-gray-900 rounded outline-none w-full focus:ring-2 focus:ring-indigo-400"
-                    value={state.amount || ""}
-                    name="amount"
-                    onChange={onChange}
-                    required={true}
-                  />
+                  <div className="flex mt-0.5">
+                    <button
+                      type="button"
+                      className="bg-gray-200 py-2 px-2 rounded-l border-gray-400 border-b border-t border-l"
+                      disabled={state.amount <= 20}
+                      onClick={() => {
+                        if (state.amount < 20) return;
+                        updateState({ amount: state.amount - 20 });
+                      }}
+                    >
+                      <AiOutlineMinus />
+                    </button>
+                    <input
+                      type="number"
+                      placeholder="Bet amount"
+                      className="border-gray-400 border-b border-t bg-white px-4 py-1 text-gray-900 outline-none w-full focus:ring-2 focus:ring-indigo-400"
+                      value={state.amount || ""}
+                      name="amount"
+                      onChange={onChange}
+                      required={true}
+                    />
+                    <button
+                      type="button"
+                      className="bg-gray-200 py-2 px-2 rounded-r border-gray-400 border-b border-t border-r"
+                      onClick={() => updateState({ amount: state.amount + 20 })}
+                    >
+                      <AiOutlinePlus />
+                    </button>
+                  </div>
 
-                  <div className="flex flex-wrap items-center justify-center">
-                    {[
-                      20, 100, 200, 500, 1000, 1500, 2000, 3000, 5000, 7000,
-                      10000,
-                    ].map((num) => {
+                  <div className="flex items-center justify-center">
+                    {[20, 100, 500, 1000, 2000, 5000].map((num) => {
                       return (
                         <button
                           onClick={() => updateState({ amount: num })}

@@ -9,7 +9,7 @@ import UserPageWrapper from "../../../../components/Wrappers/UserPageWrapper";
 
 export default function Statement() {
   const { data, SearchBar, paginator } = useSearch({
-    url: "/user/all-transaction",
+    url: "/user/my-sponsors",
   });
 
   const header = (

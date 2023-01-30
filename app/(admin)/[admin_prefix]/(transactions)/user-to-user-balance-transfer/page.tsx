@@ -6,7 +6,7 @@ import Input from "../../../../../components/Html/Input";
 import SubmitButton from "../../../../../components/Html/SubmitButton";
 import AdminPageWrapper from "../../../../../components/Wrappers/AdminPageWrapper";
 import useForm from "../../../../../hooks/useForm";
-import { successNotification } from "../../../../../utils/helpers/NotificationHelper";
+import { adminSuccessNotification } from "../../../../../utils/helpers/NotificationHelper";
 
 export default function UserToUserBalanceTransfer() {
   const { state, onChange, onSubmit, isSubmitting } = useForm({
@@ -21,7 +21,7 @@ export default function UserToUserBalanceTransfer() {
         axios
           .post("/admin/balance-transfer-by-admin", state)
           .then((res) => {
-            successNotification(res.data.message);
+            adminSuccessNotification(res.data.message);
             resolve(res.data);
           })
           .catch(reject);

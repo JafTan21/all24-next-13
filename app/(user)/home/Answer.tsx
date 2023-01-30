@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import moment from "moment";
+import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import { Rings } from "react-loader-spinner";
 import useUser from "../../../hooks/api/useUser";
@@ -79,12 +80,14 @@ export default function Answer({
   };
 
   //
-  const [lastRate, lastRateSet] = useState(() => answer.rate);
-  const [rateBg, rateBgSet] = useState("rate-bg text-white");
-
   const [bettable, bettableSet] = useState(() => {
     return game?.can_bet && question?.can_bet;
   });
+  const [lastRate, lastRateSet] = useState(() => answer.rate);
+  const [rateBg, rateBgSet] = useState(() => {
+    return bettable ? "rate-bg text-white" : "bg-red-400 text-gray-700";
+  });
+
   useEffect(() => {
     bettableSet((prev) => {
       return game?.can_bet && question?.can_bet;
@@ -106,7 +109,7 @@ export default function Answer({
       });
     }, 1500);
     lastRateSet(answer.rate);
-  }, [answer.rate, bettable]);
+  }, [answer, bettable]);
 
   if (
     !answer.show_to_users ||
@@ -146,7 +149,9 @@ export default function Answer({
               style={{
                 whiteSpace: "nowrap",
                 marginRight: "4px",
+                overflow: "scroll",
               }}
+              className="flex items-center"
             >
               <span
                 style={{
@@ -158,16 +163,27 @@ export default function Answer({
               </span>
             </div>
 
-            <span
-              className={`px-4 my-1 rounded ${rateBg}`}
-              style={{
-                fontSize: 14,
-                width: 60,
-                textAlign: "center",
-              }}
-            >
-              {Number(answer.rate).toFixed(2)}
-            </span>
+            {bettable ? (
+              <span
+                className={`px-4 my-1 rounded ${rateBg}`}
+                style={{
+                  fontSize: 14,
+                  width: 60,
+                  textAlign: "center",
+                }}
+              >
+                {Number(answer.rate).toFixed(2)}
+              </span>
+            ) : (
+              <span className={`px-1 py-1 my-1 `}>
+                <Image
+                  height={20}
+                  width={20}
+                  src="/assets/icons/lock.png"
+                  alt=""
+                />
+              </span>
+            )}
           </>
         )}
       </button>

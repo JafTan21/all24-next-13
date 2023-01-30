@@ -19,6 +19,7 @@ import {
   SelectableContext,
   useSelactableContext,
 } from "../../../../../utils/Contexts/SelectableContext";
+import { adminSuccessNotification } from "../../../../../utils/helpers/NotificationHelper";
 import TableHeader from "./Header";
 
 export default function ClubWithdraws() {
@@ -76,6 +77,7 @@ const Maker = ({
           .put("/admin/ClubWithdraw/" + row.id, state)
           .then((res) => {
             refresh();
+            adminSuccessNotification(res.data.message);
             resolve(res.data);
           })
           .catch(reject);

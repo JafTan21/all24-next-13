@@ -1,6 +1,6 @@
 import React from "react";
-import Collapsible from "../../../../../components/Html/Collapsible";
-import { IGame } from "../../../../../libs/Models/Game";
+import Collapsible from "../../../../../../components/Html/Collapsible";
+import { IGame } from "../../../../../../libs/Models/Game";
 import Game from "./Game";
 
 export default function GameGroup({

@@ -10,6 +10,7 @@ import { IUser } from "../../../../../libs/Models/User";
 import Edit from "./Edit";
 import useClubs from "../../../../../hooks/api/useClubs";
 import { AdminSelect } from "../../../../../components/Html/Input";
+import queryString from "query-string";
 
 export default function Manage(props: any) {
   const { clubs } = useClubs();
@@ -19,16 +20,10 @@ export default function Manage(props: any) {
     IUser[]
   >({
     url: "/admin/user",
-    params: {
-      search_value: props.searchParams.username,
-      username_only: !!props.searchParams.username,
-      club_id,
-    },
+    isUserManagePage: true,
   });
 
-  useEffect(() => {
-    fetchDataWithParams({ club_id });
-  }, [club_id]);
+  useEffect(() => fetchDataWithParams({ club_id }), [club_id]);
 
   return (
     <AdminPageWrapper>

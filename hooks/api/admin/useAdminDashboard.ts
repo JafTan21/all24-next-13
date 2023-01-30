@@ -1,7 +1,7 @@
 import axios from "axios";
 import useSWR from "swr";
 import { AdminConfig, URLs } from "../../../app.config";
-import { getCookie, removeCookies } from "cookies-next";
+import { getCookie } from "cookies-next";
 
 interface IAdminDashboardData {
   total_user_balance: number;
@@ -38,7 +38,7 @@ interface IAdminDashboardData {
   total_club_bonus: number;
   today_refund: number;
 
-  today_bet_pending_amount: number;
+  total_bet_pending_amount: number;
 
   total_profit: number;
   monthly_profit: number;
@@ -50,6 +50,16 @@ interface IAdminDashboardData {
   today_virtual_commission_to_club: number;
   total_virtual_commission_to_user: number;
   total_virtual_commission_to_club: number;
+
+  // super club
+  today_super_commission: number;
+  monthly_super_commission: number;
+  total_super_commission: number;
+
+  // 2nd admin
+  monthly_game_profit: number;
+  today_game_profit: number;
+  total_game_profit: number;
 }
 
 export default function useAdminDashboard() {
